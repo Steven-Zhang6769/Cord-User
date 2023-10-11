@@ -1,0 +1,75 @@
+<view class="all">
+    <view class="serviceRow">
+        <view class="left">
+            <image src="{{serviceData.picture}}"></image>
+        </view>
+        <view class="right">
+              <view class="serviceName">{{serviceData.serviceName}}</view>
+              <view class="line"></view>
+              <view class="detail">
+                  <view class="serviceLocation">
+                    <van-icon name="location-o" size="15px" color="#369472" custom-class="icon"/>
+                      <text>{{merchantData.locationName}}</text>
+                  </view>
+                  <view class="serviceTime">
+                      <van-icon name="clock-o"  size="15px" color="#369472" custom-class="icon"/>
+                      {{merchantData.availableTimes}}
+                  </view>
+              </view>
+        </view>
+    </view>
+    <view class="paymentRow number">
+        <view class="left">
+            <text>数量</text>
+        </view>
+        <view class="right">
+            <van-stepper value="{{ num }}" bind:change="onNumberChange" />
+        </view>
+    </view>
+    <view class="paymentRow paymentType">
+        <view class="left">
+            <view><text>预约时间</text></view>
+        </view>
+        <view class="right">
+            <van-dropdown-menu active-color="#369472" custom-class="dropdownGroup">
+                <van-dropdown-item id="item" popup-style ="border-radius: 0px 0px 8px 8px"  title-class ="dropdownText" title="{{selectedDateTime}}" > 
+                    <van-cell title="选择日期" bind:click="onOpenCalendar" value="{{selectedDate}}"/>
+                    <van-cell title="选择时间" bind:click="onOpenTimePicker" value = "{{shownTime}}"/>
+                    <view class="dateTimeConfirm" wx:if="{{shownTime.length != 0 && selectedDate.length != 0}}">
+                        <button bindtap="onConfirmDateTime" class="dateTimeConfirmButton">
+                            确认
+                        </button>
+                    </view>
+                </van-dropdown-item>
+            </van-dropdown-menu>
+        </view>
+    </view>
+    <view class="transferInfo">
+        <view class="title"><text>付款信息:</text></view>
+        <view class="info"><text>{{merchantData.paymentInfo}}</text></view>
+    </view>
+    <view class="previewImage" wx:if="{{file.length > 0}}">
+        <view class="title">
+            <text>付款截图预览:</text>
+        </view>
+        <view class="preview">
+            <image src="{{file}}" mode="widthFix" bindtap="enlarge" data-url = "{{file}}"></image>
+        </view>
+        <button class="reupload" bindtap="upload" wx:if="{{file.length > 0}}">重新上传</button>
+    </view>
+</view>
+<view class="bottom">
+    <view class = "priceTag">
+        <text>总计:</text>
+        ${{total}}
+    </view>
+    <view class="confirmButton">
+        <van-button round type="info" custom-class = "payButton" bind:click = "upload" wx:if="{{file.length == 0}}">上传转账截图</van-button>
+        <van-button round type="info" custom-class = "payButton" bind:click = "submitOrder" wx:if="{{file.length != 0}}">确认订单</van-button>
+    </view>
+  </view>
+<van-action-sheet show="{{ timeShow }}" title="请选择具体时间" bind:close="onTimeClose" style="z-index: -1;">
+  <van-datetime-picker type="time" value="{{ selectedTime }}" min-hour="{{ minHour }}"
+  max-hour="{{ maxHour }}" bind:input="onConfirmTime" bind:confirm = "onTimeClose" filter="{{ filter }}"/>
+</van-action-sheet>
+<van-calendar class="calendar" color = "#369472" show-mark = "{{false}}" show="{{ calendarShow }}" bind:close="onCloseCalendar" bind:confirm="onConfirmDate" />

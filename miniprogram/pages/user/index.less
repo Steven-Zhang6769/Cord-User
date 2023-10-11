@@ -1,0 +1,605 @@
+page {
+    background-color: #f7f8fa;
+}
+
+view.preLogin {
+    background: #369472;
+    height: 1300rpx;
+
+    view.wrapper {
+        text-align: center;
+        height: 1300rpx;
+        background: rgba(9, 9, 9, 0.5);
+        backdrop-filter: blur(20px);
+
+        .info {
+            text-align: center;
+            position: fixed;
+            top: 280rpx;
+            left: 270rpx;
+
+            image {
+                width: 215rpx;
+                height: 215rpx;
+            }
+
+            view.text {
+                margin-top: 42rpx;
+                font-family: PingFangSC-Semibold;
+                font-size: 43rpx;
+                color: #fafcfc;
+            }
+
+            button {
+                padding: 0rpx 35rpx 0rpx 35rpx;
+                display: inline-block;
+                background: #fafcfc;
+                border-radius: 8px;
+                font-family: PingFangSC;
+                font-size: 30rpx;
+                color: #363938;
+                margin-top: 42rpx;
+                margin-bottom: 30px;
+            }
+        }
+    }
+}
+
+view.postLogin {
+    view.header {
+        text-align: center;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+
+        view.wrapper {
+            padding: 165rpx 0rpx 15rpx 0rpx;
+            z-index: -1000;
+            backdrop-filter: blur(10px);
+            height: 50%;
+            background: rgba(9, 9, 9, 0.5);
+
+            .switchButton {
+                position: absolute;
+                left: 635rpx;
+
+                image {
+                    width: 85rpx;
+                    height: 85rpx;
+                    border-radius: 0px;
+                }
+            }
+
+            image {
+                margin-top: 30rpx;
+                width: 190rpx;
+                height: 190rpx;
+                border-radius: 50%;
+            }
+
+            view.text {
+                margin-top: 10px;
+                font-size: 37rpx;
+                font-family: PingFangSC-Semibold;
+                color: #fafcfc;
+            }
+
+            view.buttons {
+                margin: 0px auto;
+                width: 76%;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            button {
+                padding: 0rpx 35rpx 0rpx 35rpx;
+                display: inline-block;
+                background: #fafcfc;
+                border-radius: 8px;
+                font-family: PingFangSC;
+                font-size: 23rpx;
+                font-weight: 450;
+                color: #000000;
+                margin-top: 33rpx;
+                margin-bottom: 40px;
+            }
+        }
+    }
+
+    view.body {
+        position: relative;
+        z-index: 1000;
+        background-color: #f7f8fa;
+        border-radius: 23px;
+        margin-top: -20px;
+        padding-bottom: 1px;
+        padding-top: 30rpx;
+
+        view.header {
+            width: 95%;
+            margin: 0px auto;
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+
+            view.title {
+                padding-bottom: 25rpx;
+                font-family: PingFangSC-Medium;
+                font-size: 15px;
+                color: #969799;
+            }
+
+            view.checkAll {
+                font-family: PingFangSC;
+                font-size: 24rpx;
+                color: #9f9f9f;
+                text-align: right;
+            }
+        }
+
+        view.orderRow {
+            background-color: white;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 5px 12px #ebedf0;
+            display: flex;
+            padding: 33rpx 0px 33rpx 0px;
+            align-items: center;
+
+            view.left {
+                flex: 22%;
+                text-align: center;
+
+                image {
+                    box-shadow: 0px 5px 12px #ebedf0;
+                    margin-top: 22rpx;
+                    width: 122rpx;
+                    height: 122rpx;
+                    border-radius: 50%;
+                }
+            }
+
+            view.middle {
+                color: #363938;
+                text-align: left;
+                flex: 56%;
+
+                view.serviceName {
+                    padding-top: 6px;
+                    font-family: PingFangSC-Semibold;
+                    font-size: 33rpx;
+                }
+
+                .detail {
+                    margin-top: 15rpx;
+                    color: #9f9f9f;
+                    font-family: PingFangSC-Regular;
+                    font-size: 22rpx;
+
+                    text.iconfont {
+                        color: #369472;
+                        font-size: 13px;
+                    }
+                }
+
+                view.line {
+                    margin-top: 21rpx;
+                    margin-bottom: 21rpx;
+                    width: 90%;
+                    height: 1rpx;
+                    background-color: #e4e5e5;
+                }
+            }
+
+            view.right {
+                flex: 16%;
+                text-align: center;
+                padding-right: 5px;
+
+                view.price {
+                    border-radius: 8px;
+                    font-family: PingFangSC-Semibold;
+                    font-size: 47rpx;
+                }
+
+                view.status {
+                    margin-top: 20rpx;
+
+                    text {
+                        font-family: PingFangSC;
+                        font-size: 24rpx;
+                        color: #fafcfc;
+                        padding: 5px 7px 5px 7px;
+                        border-radius: 8px;
+                    }
+                }
+            }
+
+            view.pending {
+                view.price {
+                    color: #f9cf29;
+                }
+
+                view.status {
+                    text {
+                        background-color: #f9cf29;
+                    }
+                }
+            }
+
+            view.paid {
+                view.price {
+                    color: #369472;
+                }
+
+                view.status {
+                    text {
+                        background-color: #369472;
+                    }
+                }
+            }
+        }
+
+        view.foodRow {
+            background-color: white;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 5px 12px #ebedf0;
+            padding: 33rpx 25rpx 23rpx 25rpx;
+
+            view.topInfo {
+                display: flex;
+                align-items: center;
+
+                .left {
+                    color: #363938;
+                    text-align: left;
+                    flex: 90%;
+
+                    .storeInfo {
+                        display: flex;
+                        align-items: center;
+
+                        .thumb {
+                            flex: 30%;
+
+                            image {
+                                width: 140rpx;
+                                height: 140rpx;
+                                border-radius: 50%;
+                            }
+                        }
+
+                        .storeDetail {
+                            flex: 70%;
+
+                            .merchantName {
+                                font-family: PingFangSC-Semibold;
+                                font-size: 33rpx;
+                            }
+
+                            .detail {
+                                margin-top: 30rpx;
+                                margin-left: -6rpx;
+                                color: #9f9f9f;
+                                font-family: PingFangSC-Regular;
+                                font-size: 22rpx;
+
+                                .iconfont {
+                                    color: #369472;
+                                    font-size: 13px;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .right {
+                    flex: 20%;
+                    margin-top: -10rpx;
+                    text-align: center;
+
+                    view.price {
+                        border-radius: 8px;
+                        font-family: PingFangSC-Semibold;
+                        font-size: 47rpx;
+                    }
+
+                    view.status {
+                        margin-top: 12rpx;
+
+                        text {
+                            font-family: PingFangSC;
+                            font-size: 24rpx;
+                            color: white;
+                            padding: 5px 7px 5px 7px;
+                            border-radius: 8px;
+                        }
+                    }
+
+                    view.pending {
+                        view.price {
+                            color: #f9cf29;
+                        }
+
+                        view.status {
+                            text {
+                                background-color: #f9cf29;
+                            }
+                        }
+                    }
+
+                    view.paid {
+                        view.price {
+                            color: #369472;
+                        }
+
+                        view.status {
+                            text {
+                                background-color: #369472;
+                            }
+                        }
+                    }
+                }
+            }
+
+            view.line {
+                margin: 0px auto;
+                margin-top: 25rpx;
+                margin-bottom: 21rpx;
+                width: 95%;
+                height: 1rpx;
+                background-color: #e4e5e5;
+            }
+
+            .card {
+                background-color: #fff;
+                padding: 30rpx 0rpx;
+                padding-left: 10rpx;
+                padding-right: 30rpx;
+
+                .cardTitle {
+                    margin-left: 8rpx;
+                    font-family: PingFangSC;
+                    font-weight: 540;
+                    font-size: 28rpx;
+                }
+
+                .cardDescription {
+                    margin-top: 15rpx;
+                    margin-left: 8rpx;
+                    font-size: 21rpx;
+                    color: #9f9f9f;
+                }
+
+                .cardPrice {
+                    margin-left: 8rpx;
+                    font-family: PingFangSC;
+                    color: #363938;
+                }
+
+                .cardNum {
+                    color: #656565;
+                }
+
+                .thumb {
+                    border-radius: 20rpx;
+                }
+            }
+        }
+
+        view.orders {
+            width: 93%;
+            margin: 0px auto;
+        }
+
+        view.participations {
+            width: 93%;
+            margin: 0px auto;
+
+            .participationRow {
+                align-items: center;
+            }
+        }
+
+        view.info {
+            width: 93%;
+            margin: 0px auto;
+            margin-top: 20rpx;
+            line-height: 0.8em;
+
+            .wrapper {
+                padding: 40rpx 0rpx 40rpx 0rpx;
+                margin-top: 10rpx;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0px 5px 12px #ebedf0;
+
+                .storeInfo {
+                    display: flex;
+
+                    view.info_row {
+                        flex: 33%;
+                        max-width: 33%;
+                        margin-right: 4px;
+                        text-align: center;
+
+                        .title {
+                            font-family: PingFangSC;
+                            font-size: 20rpx;
+                            color: #9f9f9f;
+                        }
+
+                        .icon {
+                            margin-top: 20rpx;
+                        }
+
+                        view.desc {
+                            margin-top: 21rpx;
+                            font-family: PingFangSC;
+                            font-weight: 450;
+                            font-size: 21rpx;
+                            color: #656565;
+                        }
+
+                        view.vertical_line {
+                            border-right: 1px solid #d9d9d9;
+                            height: 20px;
+                            margin-top: -40px;
+                        }
+
+                        view.time {
+                            margin-top: -52.5px;
+                        }
+
+                        view.location {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: clip;
+                        }
+                    }
+                }
+            }
+
+            view.addService {
+                width: 30%;
+                margin: 0px auto;
+                margin-top: 50rpx;
+                text-align: center;
+                background: rgba(54, 148, 114, 0.8);
+                border-radius: 20rpx;
+                font-family: PingFangSC;
+                font-size: 25rpx;
+                color: #fafcfc;
+                padding: 20rpx 0rpx 20rpx 0rpx;
+            }
+        }
+
+        .services {
+            width: 93%;
+            margin: 0px auto;
+            margin-top: 35rpx;
+
+            view.serviceRow {
+                border-radius: 8px;
+                margin-bottom: 20px;
+                border-radius: 8px;
+                background-color: white;
+                box-shadow: 0px 5px 12px #ebedf0;
+                display: flex;
+                align-items: center;
+                padding: 15px 0px 15px 0px;
+
+                view.left {
+                    flex: 27%;
+                    max-width: 27%;
+                    text-align: center;
+
+                    image {
+                        width: 140rpx;
+                        height: 140rpx;
+                        border-radius: 30rpx;
+                    }
+                }
+
+                view.middle {
+                    color: #000000;
+                    text-align: left;
+                    flex: 55%;
+                    max-width: 55%;
+
+                    view.serviceTitle {
+                        padding-top: 5px;
+                        font-family: PingFangSC-Medium;
+                        font-size: 33rpx;
+                    }
+
+                    view.line {
+                        margin-top: 10px;
+                        margin-bottom: 10px;
+                        width: 90%;
+                        height: 1rpx;
+                        background-color: #e4e5e5;
+                    }
+
+                    view.serviceDescription {
+                        text {
+                            color: #369472;
+                            font-size: 13px;
+                        }
+
+                        color: #9f9f9f;
+                        font-family: PingFangSC-Regular;
+                        font-size: 10px;
+                        display: -webkit-box;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        word-wrap: break-word;
+                        white-space: normal !important;
+                        -webkit-line-clamp: 1;
+                        -webkit-box-orient: vertical;
+                    }
+                }
+
+                view.right {
+                    flex: 14%;
+                    max-width: 14%;
+
+                    view.price {
+                        text-align: center;
+                        width: 100%;
+                        background: rgba(54, 148, 114, 0.8);
+                        border-radius: 8px;
+                        font-family: PingFangSC;
+                        font-size: 24rpx;
+                        color: #fafcfc;
+                        padding: 5px 0px 5px 0px;
+                    }
+                }
+            }
+
+            view.addService {
+                width: 30%;
+                margin: 0px auto;
+                text-align: center;
+                background: rgba(54, 148, 114, 0.8);
+                border-radius: 20rpx;
+                font-family: PingFangSC;
+                font-size: 25rpx;
+                color: #fafcfc;
+                padding: 16rpx 0rpx 16rpx 0rpx;
+            }
+        }
+
+        view.setting {
+            width: 93%;
+            margin: 0px auto;
+            margin-top: 35rpx;
+
+            .cellGroup {
+                background: white;
+                margin-bottom: 20px;
+                box-shadow: 0px 5px 12px #ebedf0;
+                padding: 5px 15px 5px 15px;
+                border-radius: 8px;
+            }
+
+            button {
+                background-color: #fff;
+                padding: 0;
+                margin: 0;
+                font-size: inherit;
+                text-align: left;
+            }
+
+            button::after {
+                border: #fff solid;
+            }
+
+            .cell {
+                background-color: white;
+                padding: 10px 0px 10px 0px;
+            }
+        }
+    }
+}

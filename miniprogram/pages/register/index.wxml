@@ -1,0 +1,7 @@
+<view class="all">
+    <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar" plain="true">
+      <image class="avatar" src="{{avatarUrl}}" mode="scaleToFill"></image>
+    </button>
+    <input type="nickname" class="input" placeholder="请输入昵称" bindinput="nameChanged" />
+    <button class="submit" plain="true" bindtap="register">确认注册</button>
+</view>
