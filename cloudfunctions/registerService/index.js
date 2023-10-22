@@ -9,7 +9,6 @@ exports.main = async (event, context) => {
     data:{
       merchant: event.merchant,
       picture: event.picture,
-      CNYPrice: event.CNYPrice,
       USDPrice: event.USDPrice,
       serviceDescription: event.serviceDescription,
       serviceName: event.serviceName,

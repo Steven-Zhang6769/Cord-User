@@ -1,5 +1,5 @@
 page {
-    background-color: #F7F8FA;
+    background-color: #f7f8fa;
 }
 
 .wx-swiper-dots.wx-swiper-dots-horizontal {
@@ -9,12 +9,11 @@ page {
 }
 
 view.index {
-
     .swiper {
-        margin: 0px, auto;
+        margin: 0 auto;
 
         swiper {
-            margin: 0px auto;
+            margin: 0 auto;
             text-align: center;
             height: 610rpx;
 
@@ -37,13 +36,11 @@ view.index {
     }
 
     .search {
-        margin-top: -80rpx;
+        margin-top: -90rpx;
 
         .searchBackground {
             width: 102.2%;
-            margin: 0px -20rpx;
-            margin-top: 15rpx;
-            align-items: center;
+            margin: 0 -20rpx 15rpx;
 
             image {
                 padding-left: 25rpx;
@@ -52,56 +49,44 @@ view.index {
 
         .searchBar {
             height: 78rpx;
-            // box-shadow: 0px 5px 12px #d8dadf;
-            background-color: #FAFCFC;
-            box-shadow: 0px 3px 5px #ebedf0;
+            background-color: #fafcfc;
+            box-shadow: 0 3px 5px #ebedf0;
             border-radius: 16rpx;
             font-family: PingFang SC;
             font-style: normal;
             font-weight: 300;
             font-size: 24rpx;
             padding-top: 17rpx;
-            align-items: center;
             z-index: 100;
+        }
+
+        .searchText {
+            padding-left: 35rpx;
+            font-family: PingFang SC;
+            font-size: 24rpx;
         }
 
         .searchCell {
             font-size: 26rpx;
         }
-
-        .searchText {
-            align-items: center;
-            padding-left: 35rpx;
-            font-family: PingFang SC;
-            font-style: normal;
-            font-weight: 300;
-            font-size: 24rpx;
-        }
-
-        .searchCellGroup {
-            margin-top: -5px;
-        }
     }
-
 
     view.categorySelector {
         align-items: center;
         border-radius: 16rpx;
-        margin: 0px auto;
-        background-color: #FAFCFC;
-        box-shadow: 0px 5px 12px #ebedf0;
+        margin: 0 auto 20rpx;
         width: 93%;
-        margin-top: 20rpx;
+        background-color: #fafcfc;
+        box-shadow: 0 5px 12px #ebedf0;
 
         .wrapper {
             display: flex;
             justify-content: space-between;
             width: 90.5%;
-            margin: 0px auto;
-            padding: 25rpx 0rpx;
+            margin: 0 auto;
+            padding: 25rpx 0;
 
             .column {
-                justify-content: space-between;
                 text-align: center;
 
                 .icon {
@@ -122,7 +107,7 @@ view.index {
                         margin-top: 5rpx;
                         font-family: PingFangSC-Regular;
                         font-size: 19rpx;
-                        color: #9F9F9F;
+                        color: #9f9f9f;
                     }
                 }
             }
@@ -130,108 +115,98 @@ view.index {
     }
 
     view.body {
-        padding-bottom: 30rpx;
+        swiper {
+            height: 650rpx !important;
 
-        view.row {
-            width: 93%;
-            margin: 0px auto;
-            margin-top: 40rpx;
-            border-radius: 15rpx;
-            box-shadow: 0px 5px 12px #ebedf0;
-            background-color: white;
+            swiper-item {
+                width: 610rpx !important;
+                left: 75rpx;
+                padding: 40rpx 0 70rpx;
 
-            view.background {
-                border-radius: 15rpx 15rpx 0rpx 0rpx;
-                height: 250rpx;
+                &.cur .row {
+                    width: 90%;
+                    transform: none;
+                    transition: all 0.2s ease-in;
+                }
 
-                image {
+                .row {
+                    width: 91%;
+                    margin: 0 auto;
                     border-radius: 15rpx;
-                    height: 446rpx;
-                    width: 100%;
-                }
-            }
+                    box-shadow: 0 5px 12px #ebedf0;
+                    background-color: white;
+                    transform: scale(1, 0.88);
+                    transition: all 0.2s ease-in;
+                    overflow: hidden;
 
-            view.information {
-                box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.6);
-                background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, #FAFCFC 82%);
-                backdrop-filter: blur(5px);
-                height: 150rpx;
-                border-radius: 15rpx;
-                display: flex;
-                width: 98%;
-                align-items: center;
-                padding: 10px 7px 13px 0px;
-
-                view.left {
-                    flex: 100%;
-                    padding-left: 10rpx;
-                    padding-right: 10rpx;
-                    text-align: left;
-                    align-items: center;
-                    display: flex;
-
-                    image {
-                        margin-left: 10rpx;
-                        margin-right: 20rpx;
-                        width: 120rpx;
-                        height: 120rpx;
-                        border-radius: 50%;
-                    }
-
-                    view.leaderName {
-                        font-family: PingFangSC;
-                        font-size: 26rpx;
-                        color: #656565;
-                    }
-
-                    view.storeName {
-                        margin-top: 6rpx;
-                        font-family: PingFangSC-Semibold;
-                        font-size: 38rpx;
-                        color: #363938;
-                    }
-
-                    view.description {
-                        margin-top: 8rpx;
-                        font-family: PingFangSC-Thin;
-                        font-size: 23rpx;
-                        color: #656565;
-                        display: -webkit-box;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        word-wrap: break-word;
-                        white-space: normal !important;
-                        -webkit-line-clamp: 1;
-                        -webkit-box-orient: vertical;
-                    }
-                }
-
-                view.right {
-                    flex: 20%;
-                    padding-left: 5rpx;
-
-                    .circle {
-                        margin-left: 10rpx;
-                        height: 95rpx;
-                        width: 95rpx;
-                        text-align: center;
+                    view.background {
+                        border-radius: 15rpx 15rpx 0 0;
+                        height: 250rpx;
 
                         image {
-                            margin-top: 15rpx;
-                            width: 35rpx;
-                            height: 35rpx;
+                            height: 560rpx;
+                        }
+                    }
+
+                    view.information {
+                        margin-top: 130rpx;
+                        box-shadow: 0 0 10px 10px rgba(255, 255, 255, 0.6);
+                        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, #fafcfc 82%);
+                        backdrop-filter: blur(3px);
+                        height: 170rpx;
+                        border-radius: 15rpx;
+                        display: flex;
+                        align-items: center;
+                        padding: 10px 7px 13px 0;
+
+                        view.left {
+                            flex: 30%;
+                            align-items: center;
+                            display: flex;
+
+                            image {
+                                margin-left: 20rpx;
+                                width: 135rpx;
+                                height: 135rpx;
+                                border-radius: 20rpx;
+                            }
                         }
 
-                        view.priceTag {
-                            margin-top: -3px;
-                            font-family: PingFangSC-Regular;
-                            font-size: 22rpx;
-                            color: #FAFCFC;
-                        }
+                        view.right {
+                            flex: 70%;
+                            text-align: right;
 
-                        background: #369472;
-                        opacity: 0.8;
-                        border-radius: 30%;
+                            view.leaderName,
+                            view.storeName,
+                            view.description {
+                                font-family: PingFangSC;
+                            }
+
+                            view.leaderName {
+                                font-size: 26rpx;
+                                color: #656565;
+                            }
+
+                            view.storeName {
+                                margin-top: 6rpx;
+                                font-weight: 600;
+                                font-size: 38rpx;
+                                color: #363938;
+                            }
+
+                            view.description {
+                                margin-top: 8rpx;
+                                font-weight: 100;
+                                font-size: 23rpx;
+                                color: #656565;
+                                display: -webkit-box;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: normal !important;
+                                -webkit-line-clamp: 1;
+                                -webkit-box-orient: vertical;
+                            }
+                        }
                     }
                 }
             }
