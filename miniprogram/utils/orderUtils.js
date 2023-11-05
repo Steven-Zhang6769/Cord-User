@@ -1,37 +1,44 @@
-const { fetchDataFromDB } = require("./dbUtils");
+const { formatDateTimeShortYear } = require("./util");
 
+// Function to get orders for a specific merchant
 async function getMerchantOrders(merchantId) {
     try {
-        const orders = await fetchDataFromDB("orders", { merchant: merchantId });
-        return await processOrders(orders);
+        const res = await wx.cloud.callFunction({
+            name: "fetchOrderData",
+            data: {
+                whereCondition: {
+                    merchant: merchantId,
+                },
+            },
+        });
+        return res.result.list;
     } catch (error) {
-        console.error("Error fetching orders:", error);
+        console.error("Error fetching orders for merchant:", error);
         throw error;
     }
 }
 
-async function processOrders(orders) {
-    const allOrderDataPromises = orders.map(async (order) => {
-        const [serviceData, participantData, transactionData] = await Promise.all([
-            fetchDataFromDB("service", null, order.service),
-            fetchDataFromDB("user", null, order.participant),
-            fetchDataFromDB("transaction", null, order.transaction),
-        ]);
-
-        return {
-            ...order,
-            serviceData,
-            participantData,
-            transactionData,
-            createTime: formatTimeWithHours(new Date(order.createTime)),
-            reservationDate: formatTimeWithHours(new Date(order.date)),
-        };
-    });
-
-    const allOrderData = await Promise.all(allOrderDataPromises);
-    return allOrderData.sort((a, b) => new Date(a.reservationDate).getTime() - new Date(b.reservationDate).getTime());
+async function getOrderfromID(orderId) {
+    try {
+        const res = await wx.cloud.callFunction({
+            name: "fetchOrderData",
+            data: {
+                whereCondition: {
+                    _id: orderId,
+                },
+            },
+        });
+        let order = res.result.list[0];
+        order.date = formatDateTimeShortYear(new Date(order.date));
+        order.createTime = formatDateTimeShortYear(new Date(order.createTime));
+        return order;
+    } catch (error) {
+        console.error("Error fetching order:", error);
+        throw error;
+    }
 }
 
 module.exports = {
     getMerchantOrders,
+    getOrderfromID,
 };

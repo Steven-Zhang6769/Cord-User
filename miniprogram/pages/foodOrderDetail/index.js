@@ -7,7 +7,8 @@ Page({
         statusLoading: false,
         dateStatusLoading: false,
         selectorShow: false,
-        actions: [{
+        actions: [
+            {
                 name: "已拒绝",
                 subname: "关闭订单",
                 className: "actionOption",
@@ -30,8 +31,8 @@ Page({
         ],
     },
 
-    onLoad: function(options) {
-        Date.prototype.addMinutes = function(h) {
+    onLoad: function (options) {
+        Date.prototype.addMinutes = function (h) {
             return new Date(this.getTime() + h * 60 * 1000);
         };
         wx.showLoading({
@@ -42,23 +43,17 @@ Page({
             orderID: options.orderid,
         });
     },
-    onReady: function(options) {
+    onReady: function (options) {
         wx.hideLoading();
     },
-    onPullDownRefresh: function() {
+    onPullDownRefresh: function () {
         this.onLoad(this.data.options); //重新加载onLoad()
         wx.hideLoading();
     },
     async getOrderData(orderID) {
-        var orderData = await wx.cloud
-            .database()
-            .collection("orders")
-            .doc(orderID)
-            .get();
+        var orderData = await wx.cloud.database().collection("orders").doc(orderID).get();
 
-        orderData.data.createTime = this.formatTimeWithHours(
-            new Date(orderData.data.createTime)
-        );
+        orderData.data.createTime = this.formatTimeWithHours(new Date(orderData.data.createTime));
         this.setData({
             orderData: orderData.data,
         });
@@ -68,15 +63,9 @@ Page({
     },
 
     async getTransactionData(transactionID) {
-        var res = await wx.cloud
-            .database()
-            .collection("transaction")
-            .doc(transactionID)
-            .get();
+        var res = await wx.cloud.database().collection("transaction").doc(transactionID).get();
 
-        res.data.createTime = this.formatTimeWithHours(
-            new Date(res.data.createTime)
-        );
+        res.data.createTime = this.formatTimeWithHours(new Date(res.data.createTime));
 
         this.setData({
             transactionData: res.data,
@@ -85,11 +74,7 @@ Page({
 
     async getMerchantData(merchantID) {
         var ifMerchant = false;
-        const res = await wx.cloud
-            .database()
-            .collection("merchant")
-            .doc(merchantID)
-            .get();
+        const res = await wx.cloud.database().collection("merchant").doc(merchantID).get();
 
         var merchantData = res.data;
 
@@ -148,36 +133,38 @@ Page({
             selectorShow: false,
         });
     },
-    
-    async onChangeRating(e){
-    if (this.updateRating(e.detail)) {
-        wx.showToast({
-            title: '评分成功',
-            icon: 'success'
-        })
-        this.setData({
-          rating: e.detail,
-        });
-    } else {
-        wx.showToast({
-            title: '评分失败',
-            icon: 'error'
-        })
-    }
+
+    async onChangeRating(e) {
+        if (this.updateRating(e.detail)) {
+            wx.showToast({
+                title: "评分成功",
+                icon: "success",
+            });
+            this.setData({
+                rating: e.detail,
+            });
+        } else {
+            wx.showToast({
+                title: "评分失败",
+                icon: "error",
+            });
+        }
     },
     async updateRating(rating) {
-      await wx.cloud
-          .callFunction({
-              name: "updateRating",
-              data: {
-                  orderid: this.data.orderData._id,
-                  rating: rating
-              },
-          }).then(res => {
-              return true;
-          }).catch(err => {
-              return false;
-          })
+        await wx.cloud
+            .callFunction({
+                name: "updateRating",
+                data: {
+                    orderid: this.data.orderData._id,
+                    rating: rating,
+                },
+            })
+            .then((res) => {
+                return true;
+            })
+            .catch((err) => {
+                return false;
+            });
     },
     async getPreviousAppointmentTime(merchantID) {
         let db = wx.cloud.database();
@@ -271,12 +258,10 @@ Page({
     },
 
     async onConfirmDateTime(e) {
-        let that = this
+        let that = this;
         let selectedDate = this.data.selectedDate;
         let selectedTime = this.data.selectedTime;
-        let selectedDataTime = new Date(
-            new Date().getFullYear() + "/" + selectedDate + " " + selectedTime
-        );
+        let selectedDataTime = new Date(new Date().getFullYear() + "/" + selectedDate + " " + selectedTime);
         var ifFull = false;
 
         this.data.previousAppointmentList.forEach((v) => {
@@ -288,37 +273,38 @@ Page({
         if (!ifFull) {
             this.setData({
                 selectorShow: false,
-                dateStatusLoading: true
-            })
+                dateStatusLoading: true,
+            });
             wx.showModal({
                 title: "确定更改时间?",
                 placeholderText: new Date().getFullYear() + "/" + selectedDate + " " + selectedTime,
-                cancelColor: 'cancelColor',
-            }).then(res => {
-                if (this.updateReservationTime(selectedDataTime, this.data.orderID)) {
-                    wx.showToast({
-                        title: '时间更新成功',
-                        icon: 'success'
-                    })
-                    setTimeout(function() {
-                        that.getOrderData(that.data.orderID);
-                        that.setData({
-                            dateStatusLoading: false,
-                        });
-                    }, 1500)
-
-                } else {
-                    wx.showToast({
-                        title: '时间更新失败',
-                        icon: 'error'
-                    })
-                }
-            }).catch(err => {
-                wx.showToast({
-                    title: '已取消',
-                    icon: "none"
-                })
+                cancelColor: "cancelColor",
             })
+                .then((res) => {
+                    if (this.updateReservationTime(selectedDataTime, this.data.orderID)) {
+                        wx.showToast({
+                            title: "时间更新成功",
+                            icon: "success",
+                        });
+                        setTimeout(function () {
+                            that.getOrderData(that.data.orderID);
+                            that.setData({
+                                dateStatusLoading: false,
+                            });
+                        }, 1500);
+                    } else {
+                        wx.showToast({
+                            title: "时间更新失败",
+                            icon: "error",
+                        });
+                    }
+                })
+                .catch((err) => {
+                    wx.showToast({
+                        title: "已取消",
+                        icon: "none",
+                    });
+                });
         } else {
             wx.showToast({
                 title: "该时间已满，请重选",
@@ -332,13 +318,15 @@ Page({
                 name: "updateReservationTime",
                 data: {
                     orderid: orderid,
-                    date: date
+                    date: date,
                 },
-            }).then(res => {
-                return true;
-            }).catch(err => {
-                return false;
             })
+            .then((res) => {
+                return true;
+            })
+            .catch((err) => {
+                return false;
+            });
     },
 
     formatTimeWithHours(date) {
@@ -349,10 +337,7 @@ Page({
         var hour = date.getHours();
         var minute = date.getMinutes();
 
-        return (
-            [year, month, day].map(this.formatNumber).join("/") +
-            " " + [hour, minute].map(this.formatNumber).join(":")
-        );
+        return [year, month, day].map(this.formatNumber).join("/") + " " + [hour, minute].map(this.formatNumber).join(":");
     },
     formatNumber(n) {
         n = n.toString();
@@ -366,14 +351,12 @@ Page({
     },
     transactionNavigator(e) {
         wx.navigateTo({
-            url: "/pages/transactionDetail/index?transactionid=" +
-                e.currentTarget.dataset.transactionid,
+            url: "/pages/transactionDetail/index?transactionid=" + e.currentTarget.dataset.transactionid,
         });
     },
     serviceNavigator(e) {
         wx.navigateTo({
-            url: "/pages/serviceDetail/index?serviceid=" +
-                e.currentTarget.dataset.serviceid,
+            url: "/pages/serviceDetail/index?serviceid=" + e.currentTarget.dataset.serviceid,
         });
     },
     async rejectOrder() {
@@ -452,11 +435,11 @@ Page({
                 break;
         }
         this.onClose();
-        setTimeout(function() {
+        setTimeout(function () {
             that.getOrderData(that.data.orderID);
             that.setData({
                 statusLoading: false,
             });
-        }, 1500)
+        }, 1500);
     },
 });

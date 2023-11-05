@@ -129,11 +129,7 @@ view.index view.body swiper swiper-item .row view.information {
   display: flex;
   align-items: center;
   padding: 10px 7px 13px 0;
-}
-view.index view.body swiper swiper-item .row view.information view.left {
-  flex: 30%;
-  align-items: center;
-  display: flex;
+  justify-content: space-between;
 }
 view.index view.body swiper swiper-item .row view.information view.left image {
   margin-left: 20rpx;
@@ -142,35 +138,7 @@ view.index view.body swiper swiper-item .row view.information view.left image {
   border-radius: 20rpx;
 }
 view.index view.body swiper swiper-item .row view.information view.right {
-  flex: 70%;
   text-align: right;
-}
-view.index view.body swiper swiper-item .row view.information view.right view.leaderName,
-view.index view.body swiper swiper-item .row view.information view.right view.storeName,
-view.index view.body swiper swiper-item .row view.information view.right view.description {
-  font-family: PingFangSC;
-}
-view.index view.body swiper swiper-item .row view.information view.right view.leaderName {
-  font-size: 26rpx;
-  color: #656565;
-}
-view.index view.body swiper swiper-item .row view.information view.right view.storeName {
-  margin-top: 6rpx;
-  font-weight: 600;
-  font-size: 38rpx;
-  color: #363938;
-}
-view.index view.body swiper swiper-item .row view.information view.right view.description {
-  margin-top: 8rpx;
-  font-weight: 100;
-  font-size: 23rpx;
-  color: #656565;
-  display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal !important;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
 }
 view.index view.body button::after {
   border: none;

@@ -1,42 +1,59 @@
 const app = getApp();
-const { getMerchantDataWithId } = require("../../utils/merchantUtils");
+const { getMerchantDataWithID } = require("../../utils/merchantUtils");
 
 const TEMPLATE_ID = "b0cVrk0vEvthUKTmqt7xV-31wgxUcC-beFDI5N4kkXc";
 
 Page({
-    // Initialization & Setup
     data: {
+        loading: true,
         openid: wx.getStorageSync("openid"),
         loginStatus: app.globalData.loginStatus,
         userInfo: wx.getStorageSync("userInfo"),
         showMerchantDetail: false,
+        showServiceDetail: false,
+        showCart: false,
+        showCartDetail: false,
+        total: 0,
+        totalOrder: 0,
     },
 
     onLoad(options) {
-        this.fetchMerchantData(options.id);
+        this.refreshData(options.id);
+    },
+    onPullDownRefresh(options) {
+        this.refreshData(options.id);
     },
 
+    // ========================
     // Data Fetching
-    async fetchMerchantData(id) {
+    // ========================
+    async refreshData(id) {
+        wx.showLoading({ title: "加载商家中" });
         try {
-            const [merchantData] = await getMerchantDataWithId(id);
-            this.setData({ merchantData });
+            const [merchantData] = await getMerchantDataWithID(id);
+            this.setData({
+                merchantData,
+                serviceData: merchantData.serviceData,
+                avgRating: merchantData.avgRating.toFixed(1),
+                loading: false,
+            });
         } catch (error) {
             console.error("Error loading merchant data:", error);
         }
+        wx.hideLoading();
     },
 
+    // ========================
     // UI Actions
+    // ========================
     openLocation() {
         const { longitude, latitude, locationName, locationDetail } = this.data.merchantData;
-
         if (!longitude || !latitude) {
             return wx.showToast({
                 title: "商家未提供具体地址",
                 icon: "none",
             });
         }
-
         wx.openLocation({
             latitude,
             longitude,
@@ -52,78 +69,124 @@ Page({
             urls: this.data.merchantData.subPic,
         });
     },
+
     showMerchantDetail() {
         this.setData({ showMerchantDetail: true });
     },
-    closeStoreDetail() {
+    closeMerchantDetail() {
         this.setData({ showMerchantDetail: false });
     },
+    showServiceDetail(e) {
+        console.log(e);
+        this.setData({
+            showServiceDetail: true,
+            selectedServiceData: e.currentTarget.dataset.data,
+        });
+    },
+    closeServiceDetail() {
+        this.setData({ showServiceDetail: false });
+    },
+    showCartDetail() {
+        this.setData({ showCartDetail: true });
+    },
+    closeCartDetail() {
+        this.setData({ showCartDetail: false });
+    },
 
-    // Chat-related Operations
-    async contactMerchant() {
+    cancelOrder() {
+        const serviceData = this.data.serviceData.map((v) => ({ ...v, num: v.num ? 0 : v.num }));
+        this.setData({
+            showCart: false,
+            serviceData,
+            total: 0,
+            totalOrder: 0,
+        });
+    },
+
+    // ========================
+    // Cart Operations
+    // ========================
+    addServiceToCart(e) {
+        if (!this.data.showCart) {
+            this.setData({ showCart: true });
+        }
+        const updatedData = this.updateCartData(e.currentTarget.dataset.id);
+        this.setData(updatedData);
+    },
+
+    onStepperChange(e) {
+        const updatedData = this.updateCartData(e.currentTarget.dataset.id, e.detail);
+        this.setData(updatedData);
+    },
+
+    updateCartData(id, quantity = 1) {
+        const serviceData = [...this.data.serviceData];
+        const index = serviceData.findIndex((v) => v._id == id);
+        serviceData[index].num = quantity;
+
+        const total = serviceData.reduce((acc, v) => acc + (v.num ? v.USDPrice * v.num : 0), 0);
+        const totalOrder = serviceData.reduce((acc, v) => acc + (v.num || 0), 0);
+
+        return { serviceData, total, totalOrder };
+    },
+    submitOrder(e) {
         if (!this.data.loginStatus) {
-            return wx.showToast({
-                title: "请先登陆/注册",
+            wx.showToast({
+                title: "请先去主页注册/登陆",
                 icon: "none",
             });
+            return;
         }
+        if (this.data.total == 0) {
+            wx.showToast({
+                title: "还未选择任何菜品",
+                icon: "none",
+            });
+            return;
+        }
+        app.globalData.currentMerchant = this.data.merchantData;
+        app.globalData.currentOrder = this.data.serviceData;
+        wx.navigateTo({
+            url: "/pages/paymentConfirmation/index?total=" + this.data.total + "&merchantid=" + this.data.merchantData._id,
+        });
+    },
 
+    // ========================
+    // Chat Operations
+    // ========================
+    async contactMerchant() {
         const { openid, userInfo, merchantData } = this.data;
         const ownerInfo = merchantData.ownerData;
-        const ownerOpenID = ownerInfo.openid;
-        const chatID = `${ownerOpenID}${openid}`;
-
         try {
-            if (!userInfo.friends.some((e) => e.openid === ownerOpenID)) {
-                await this.subscribeAndAddToFriends(openid, ownerOpenID, userInfo, ownerInfo, chatID);
+            if (!userInfo.friends.some((e) => e.openid === ownerInfo.openid)) {
+                await this.subscribeAndAddToFriends(openid, ownerInfo.openid, userInfo, ownerInfo, `${ownerInfo.openid}${openid}`);
             }
-            this.chatRoomNavigator(chatID, ownerInfo.username, ownerOpenID);
+            this.chatRoomNavigator(`${ownerInfo.openid}${openid}`, ownerInfo.username, ownerInfo.openid);
         } catch (error) {
-            console.log(error);
-            wx.showToast({
-                title: "私信失败",
-                icon: "error",
-            });
+            console.error(error);
+            wx.showToast({ title: "私信失败", icon: "error" });
         }
     },
 
     async subscribeAndAddToFriends(customerOpenID, ownerOpenID, customerInfo, ownerInfo, chatID) {
-        const subscribeRes = await wx.requestSubscribeMessage({
-            tmplIds: [TEMPLATE_ID],
-        });
-        if (subscribeRes.errMsg !== "requestSubscribeMessage:ok") {
-            throw new Error("Request subscribe message failed");
-        }
+        const subscribeRes = await wx.requestSubscribeMessage({ tmplIds: [TEMPLATE_ID] });
+        if (subscribeRes.errMsg !== "requestSubscribeMessage:ok") throw new Error("Request subscribe message failed");
 
         const addPeopleRes = await wx.cloud.callFunction({
             name: "confirmFriend",
-            data: {
-                requesterOpenID: customerOpenID,
-                requesterInfo: customerInfo,
-                receiverOpenID: ownerOpenID,
-                receiverInfo: ownerInfo,
-                chatRoomID: chatID,
-            },
+            data: { requesterOpenID, requesterInfo: customerInfo, receiverOpenID, receiverInfo: ownerInfo, chatRoomID: chatID },
         });
-        if (addPeopleRes.errMsg !== "cloud.callFunction:ok") {
-            throw new Error("Add people failed");
-        }
+        if (addPeopleRes.errMsg !== "cloud.callFunction:ok") throw new Error("Add people failed");
     },
-
-    // Navigation Helpers
-    serviceDetailNavigator(e) {
-        const { serviceid, data } = e.currentTarget.dataset;
-        wx.navigateTo({
-            url: `/pages/serviceDetail/index?serviceid=${serviceid}&data=${JSON.stringify(data)}`,
-        });
-    },
-
     chatRoomNavigator(chatID, roomName, ownerOpenID) {
         wx.navigateTo({
             url: `/pages/example/chatroom_example/room/room?id=${chatID}&name=${roomName}&haoyou_openid=${ownerOpenID}`,
         });
     },
 
+    // ========================
+    // Navigation Helpers
+    // ========================
     navigateBack() {
         wx.navigateBack({ delta: 1 });
     },

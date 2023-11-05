@@ -1,4 +1,4 @@
-<view class="header" style="background-image: url({{serviceData.picture}});">
+<view class="header" style="background-image: url({{merchantData.coverPic}});">
     <view class="wrapper">
         <view class="left">
             <view class="participant userRow">
@@ -13,11 +13,11 @@
             <view class="line"></view>
             <view class="merchant userRow">
                 <view class="profile">
-                    <image src="{{merchantData.leaderData.profilePic}}"></image>
+                    <image src="{{merchantData.coverPic}}"></image>
                 </view>
                 <view class="userInfo">
                     <view class="h2">商家</view>
-                    <view class="h1">{{merchantData.leaderData.username}}</view>
+                    <view class="h1">{{merchantData.title}}</view>
                 </view>
             </view>
         </view>
@@ -28,7 +28,7 @@
 </view>
 <view class="main">
   <van-cell-group inset title="预约信息" custom-class = "cellGroup">
-    <van-cell title="预约时间:" value="{{orderData.reservationTime}}" custom-class = "infoCell" wx:if="{{!dateStatusLoading}}"/>
+    <van-cell title="预约时间:" value="{{orderData.date}}" custom-class = "infoCell" wx:if="{{!dateStatusLoading}}"/>
     <van-cell title="预约时间:" custom-class = "infoCell" wx:if="{{dateStatusLoading}}">
             <van-loading slot="right-icon" type="spinner" size="16px"></van-loading>
         </van-cell>

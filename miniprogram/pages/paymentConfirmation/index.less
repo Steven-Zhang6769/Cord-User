@@ -6,193 +6,24 @@ view.all {
     width: 95%;
     margin: 0px auto;
     padding-bottom: 170rpx;
-
-    view.serviceRow {
-        margin-top: 15px;
-        display: flex;
-        align-items: center;
-
-        view.left {
-            padding-left: 10rpx;
-            flex: 40%;
-
-            image {
-                width: 230rpx;
-                height: 230rpx;
-                border-radius: 8px;
-            }
-        }
-
-        view.right {
-            flex: 60%;
-            text-align: right;
-            align-items: center;
-
-            .serviceName {
-                font-family: PingFangSC-Semibold;
-                font-size: 42rpx;
-                color: #363938;
-            }
-
-            .line {
-                margin-top: 33rpx;
-                margin-bottom: 33rpx;
-                width: 100%;
-                height: 1rpx;
-                background-color: #e4e5e5;
-            }
-
-            view.detail {
-                display: flex;
-                width: 100%;
-                text-align: right;
-
-                .icon {
-                    padding-right: 5rpx;
-                }
-
-                .serviceLocation {
-                    flex: 30%;
-                    font-family: PingFangSC-Regular;
-                    font-size: 21rpx;
-                    color: #9f9f9f;
-                }
-
-                .serviceTime {
-                    flex: 60%;
-                    font-family: PingFangSC-Regular;
-                    font-size: 21rpx;
-                    color: #969799;
-                    display: -webkit-box;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    word-wrap: break-word;
-                    white-space: normal !important;
-                    -webkit-line-clamp: 1;
-                    -webkit-box-orient: vertical;
-                }
-            }
-        }
+    .orderCard {
+        margin-top: 12rpx;
+        background-color: #fff;
+        padding: 40rpx 0rpx;
     }
 
-    view.paymentRow {
-        margin-top: 55rpx;
-        background: #ffffff;
-        box-shadow: 0px 5px 12px #ebedf0;
-        padding: 25px 15px 25px 20px;
-        border-radius: 8px;
-
-        display: flex;
-
-        view.left {
-            flex: 70%;
-
-            text {
-                font-family: PingFangSC-Semibold;
-                font-size: 31rpx;
-                color: #363938;
-                border-bottom: #369472 1px solid;
-                padding: 5px;
-            }
-        }
-
-        view.right {
-            flex: 30%;
-
-            .dropdownGroup {
-                height: 25px;
-                box-shadow: none;
-            }
-
-            .dropdownText {
-                font-family: PingFangSC-Regular;
-                font-size: 13px;
-                color: #969799;
-            }
-
-            .dateTimeConfirm {
-                padding: 15px 0px 10px 0px;
-                width: 40%;
-                margin: 0px auto;
-            }
-
-            .dateTimeConfirmButton {
-                border-radius: 10px;
-                background: #369472;
-                font-family: PingFangSC-Semibold;
-                font-size: 14px;
-                color: #ffffff;
-            }
-        }
-    }
-
-    .transferInfo {
-        background-color: white;
-        margin-top: 40rpx;
-        box-shadow: 0px 5px 12px #ebedf0;
-        padding: 20px 15px 20px 20px;
-        border-radius: 8px;
-
+    .location {
         .title {
-            text {
-                font-family: PingFangSC-Semibold;
-                font-size: 31rpx;
-                color: #363938;
-                border-bottom: #369472 1px solid;
-                padding: 5px;
-            }
-        }
-
-        .info {
-            margin-top: 30rpx;
-
-            text {
-                font-family: PingFangSC-Regular;
-                font-size: 30rpx;
-                color: #363938;
-                line-height: 2em;
-            }
+            margin-bottom: 20rpx;
         }
     }
 
     .previewImage {
-        background-color: white;
-        margin-top: 20px;
-        box-shadow: 0px 5px 12px #ebedf0;
-        padding: 15px;
-        border-radius: 8px;
-
-        .title {
-            text {
-                font-family: PingFangSC-Semibold;
-                font-size: 31rpx;
-                color: #363938;
-                border-bottom: #369472 1px solid;
-                padding: 5px;
-            }
-        }
-
         .preview {
             margin-top: 40rpx;
-            text-align: center;
-
             image {
-                box-shadow: 0px 5px 12px #ebedf0;
                 width: 100%;
             }
-        }
-
-        button.reupload {
-            width: 40%;
-            margin: 0px auto;
-            margin-top: 20rpx;
-            background: rgba(54, 148, 114, 0.8);
-            border-radius: 20rpx;
-            font-family: PingFangSC;
-            font-size: 25rpx;
-            color: #fafcfc;
-            padding: 5rpx 0rpx 5rpx 0rpx;
-            box-shadow: 0px 5px 12px #ebedf0;
         }
     }
 }
@@ -203,27 +34,16 @@ view.bottom {
     bottom: 0px;
     display: flex;
     background-color: white;
-    padding: 15px 20px 15px 20px;
-
-    view.priceTag {
-        flex: 40%;
-        font-family: PingFangSC-Medium;
-        font-size: 25px;
-        color: #363938;
-
-        text {
-            font-family: PingFangSC-Medium;
-            font-size: 15px;
-        }
-    }
+    padding: 15px 20px 30px 20px;
+    align-items: center;
+    justify-content: space-between;
 
     view.confirmButton {
-        flex: 40%;
+        width: 50%;
         text-align: center;
         padding-right: 10rpx;
 
         .payButton {
-            box-shadow: 0px 5px 12px #ebedf0;
             width: 70%;
             background: #369472;
             border-radius: 15rpx;
@@ -238,9 +58,31 @@ view.bottom {
     }
 }
 
+view.reservationModal {
+    padding: 0rpx 30rpx 40rpx 30rpx;
+    .underlineCardBold {
+        box-shadow: none;
+        padding-top: 0rpx;
+        padding-bottom: 0rpx;
+    }
+    .dateTimeConfirm {
+        padding: 30rpx 0px 0px 0px;
+        width: 40%;
+        margin: 0px auto;
+    }
+
+    .dateTimeConfirmButton {
+        border-radius: 10px;
+        background: #369472;
+        font-family: PingFangSC-Semibold;
+        font-size: 14px;
+        color: #ffffff;
+        margin-top: 20rpx;
+    }
+}
+
 .calendar {
     z-index: -10;
-
     button {
         font-family: PingFangSC-Regular;
     }

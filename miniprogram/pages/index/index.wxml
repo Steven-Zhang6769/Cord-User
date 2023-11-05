@@ -38,7 +38,7 @@
         <view class="wrapper">
             <view class="study column">
                 <view class="icon" bindtap="categoryNavigator" data-category="study">
-                    <image src="cloud://cord-4gtkoygbac76dbeb.636f-cord-4gtkoygbac76dbeb-1312381645/study.PNG" mode="aspectFit"></image>
+                    <image src="../../image/index/study.PNG" mode="aspectFit"></image>
                 </view>
                 <view class="text">
                     <view class="title">学习</view>
@@ -47,7 +47,7 @@
             </view>
             <view class="service column">
                 <view class="icon" bindtap="categoryNavigator" data-category="service">
-                    <image src="cloud://cord-4gtkoygbac76dbeb.636f-cord-4gtkoygbac76dbeb-1312381645/service.PNG" mode="aspectFit"></image>
+                    <image src="../../image/index/service.png" mode="aspectFit"></image>
                 </view>
                 <view class="text">
                     <view class="title">服务</view>
@@ -56,7 +56,7 @@
             </view>
             <view class="entertainment column">
                 <view class="icon" bindtap="categoryNavigator" data-category="entertainment">
-                    <image src="cloud://cord-4gtkoygbac76dbeb.636f-cord-4gtkoygbac76dbeb-1312381645/IMG_0517.PNG" mode="aspectFit"></image>
+                    <image src="../../image/index/entertainment.png" mode="aspectFit"></image>
                 </view>
                 <view class="text">
                     <view class="title">娱乐</view>
@@ -65,7 +65,8 @@
             </view>
         </view>
     </view>
-    <view class="body">
+    <van-skeleton title row="3" wx:if="{{ loading }}" />
+    <view class="body" wx:if="{{ !loading }}">
         <swiper bindchange="cardSwiper" current="{{ cardCur }}">
             <block wx:for="{{ merchants }}">
                 <swiper-item
@@ -84,9 +85,9 @@
                             </view>
                             <view class="right">
                                 <view>
-                                    <view class="leaderName">{{ item.ownerData.username }}</view>
-                                    <view class="storeName">{{ item.title }}</view>
-                                    <view class="description">{{ item.subTitle }}</view>
+                                    <view class="h5">{{ item.ownerData.username }}</view>
+                                    <view class="h2">{{ item.title }}</view>
+                                    <view class="h7">{{ item.subTitle }}</view>
                                 </view>
                             </view>
                         </view>

@@ -7,6 +7,8 @@ App({
         ownerData: null,
         merchantData: null,
         loginStatus: false,
+        currentOrder: null,
+        currentMerchant: null,
     },
 
     onLaunch: function () {
@@ -108,11 +110,10 @@ App({
             return;
         } else {
             try {
-                let res = await wx.cloud.database().collection("user").where({ openid: openid }).get();
+                let res = await wx.cloud.database().collection("users").where({ openid: openid }).get();
                 userInfo = res.data[0];
                 if (!userInfo) return;
                 wx.setStorageSync("userInfo", userInfo);
-                wx.setStorageSync("CordID", userInfo._id);
                 this.globalData.userInfo = userInfo;
                 this.globalData.loginStatus = true;
             } catch (error) {

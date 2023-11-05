@@ -1,30 +1,26 @@
 Page({
     data: {
-        openid: wx.getStorageSync('openid'),
-        userInfo: wx.getStorageSync('userInfo'),
+        openid: wx.getStorageSync("openid"),
+        userInfo: wx.getStorageSync("userInfo"),
         value: 0,
         num: 1,
         file: "",
         openid: wx.getStorageSync("openid"),
         cordid: wx.getStorageSync("CordID"),
-        userLocation: ""
+        userLocation: "",
     },
 
-    onLoad: function(options) {
+    onLoad: function (options) {
         this.setData({
             merchantID: options.merchantid,
             order: JSON.parse(options.order),
-            total: options.total
+            total: options.total,
         });
         this.getMerchantData(options.merchantid);
     },
 
     async getServiceData(serviceID) {
-        const res = await wx.cloud
-            .database()
-            .collection("service")
-            .doc(serviceID)
-            .get();
+        const res = await wx.cloud.database().collection("service").doc(serviceID).get();
 
         await this.getMerchantData(res.data.merchant);
         await this.getPreviousAppointmentTime(res.data.merchant);
@@ -36,11 +32,7 @@ Page({
     },
 
     async getMerchantData(merchantID) {
-        const res = await wx.cloud
-            .database()
-            .collection("merchant")
-            .doc(merchantID)
-            .get();
+        const res = await wx.cloud.database().collection("merchant").doc(merchantID).get();
 
         var merchantData = res.data;
 
@@ -71,19 +63,19 @@ Page({
         });
     },
 
-    onChangeLocation(e){
-      this.setData({
-        userLocation: e.detail
-      })
+    onChangeLocation(e) {
+        this.setData({
+            userLocation: e.detail,
+        });
     },
 
     upload(e) {
         wx.chooseMedia({
-                media: ["image"],
-                count: 1,
-                sizeType: ["original", "compressed"],
-                sourceType: ["album", "camera"],
-            })
+            media: ["image"],
+            count: 1,
+            sizeType: ["original", "compressed"],
+            sourceType: ["album", "camera"],
+        })
             .then((res) => {
                 console.log(res);
                 this.setData({
@@ -106,23 +98,24 @@ Page({
     uploadFilePromise(fileName, chooseResult) {
         return wx.cloud.uploadFile({
             cloudPath: fileName,
-            filePath: chooseResult.url
+            filePath: chooseResult.url,
         });
     },
 
     async submitOrder(e) {
-      if(this.data.userLocation.length == 0){
-        wx.showToast({
-          title: '请输入送餐地址',
-          icon: 'none'
-        })
-        return;
-      }
-      let subscribeRes = await wx.requestSubscribeMessage({
-        tmplIds: ["t99WD8_SUi4kmPcRHhAC_ZMcwZDTCGMzm4MvdC66W6E"]});
-      console.log(subscribeRes);
+        if (this.data.userLocation.length == 0) {
+            wx.showToast({
+                title: "请输入送餐地址",
+                icon: "none",
+            });
+            return;
+        }
+        let subscribeRes = await wx.requestSubscribeMessage({
+            tmplIds: ["t99WD8_SUi4kmPcRHhAC_ZMcwZDTCGMzm4MvdC66W6E"],
+        });
+        console.log(subscribeRes);
         wx.showLoading({
-            title: "创建订单中"
+            title: "创建订单中",
         });
 
         var screenshotID = Date.now() + "Transaction.jpg";
@@ -154,7 +147,7 @@ Page({
                     transaction: transactionRes.result._id,
                     order: this.data.order,
                     status: "pending",
-                    deliveryLocation: this.data.userLocation
+                    deliveryLocation: this.data.userLocation,
                 },
             });
             wx.hideLoading({});

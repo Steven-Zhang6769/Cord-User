@@ -158,12 +158,9 @@ view.index {
                         display: flex;
                         align-items: center;
                         padding: 10px 7px 13px 0;
+                        justify-content: space-between;
 
                         view.left {
-                            flex: 30%;
-                            align-items: center;
-                            display: flex;
-
                             image {
                                 margin-left: 20rpx;
                                 width: 135rpx;
@@ -173,39 +170,7 @@ view.index {
                         }
 
                         view.right {
-                            flex: 70%;
                             text-align: right;
-
-                            view.leaderName,
-                            view.storeName,
-                            view.description {
-                                font-family: PingFangSC;
-                            }
-
-                            view.leaderName {
-                                font-size: 26rpx;
-                                color: #656565;
-                            }
-
-                            view.storeName {
-                                margin-top: 6rpx;
-                                font-weight: 600;
-                                font-size: 38rpx;
-                                color: #363938;
-                            }
-
-                            view.description {
-                                margin-top: 8rpx;
-                                font-weight: 100;
-                                font-size: 23rpx;
-                                color: #656565;
-                                display: -webkit-box;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                white-space: normal !important;
-                                -webkit-line-clamp: 1;
-                                -webkit-box-orient: vertical;
-                            }
                         }
                     }
                 }

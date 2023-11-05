@@ -35,7 +35,7 @@
 .header .left .userRow .userInfo .h2 {
   font-family: PingFangSC;
   font-size: 22rpx;
-  color: #CDCDCD;
+  color: #cdcdcd;
   margin-top: -5rpx;
 }
 .header .left .userRow .userInfo .h1 {
@@ -49,7 +49,7 @@
   margin-bottom: 38rpx;
   width: 95%;
   height: 1rpx;
-  background-color: #E4E5E5;
+  background-color: #e4e5e5;
 }
 .header .right {
   flex: 50%;
@@ -63,7 +63,7 @@
 }
 .main {
   position: relative;
-  background-color: #F7F8FA;
+  background-color: #f7f8fa;
   border-radius: 23px;
   z-index: 1500;
   margin-top: -23px;
@@ -97,7 +97,7 @@
   margin-top: 15rpx;
   margin-left: 8rpx;
   font-size: 21rpx;
-  color: #9F9F9F;
+  color: #9f9f9f;
 }
 .main .card .cardPrice {
   margin-left: 8rpx;

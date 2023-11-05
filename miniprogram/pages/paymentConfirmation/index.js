@@ -1,329 +1,296 @@
+const app = getApp();
+import { getCurrentAppointments } from "../../utils/merchantUtils";
+import { formatMonthAndDay, constructSelectedDateTime } from "../../utils/util";
+
 Page({
-  data: {
-    openid: wx.getStorageSync("openid"),
-    cordid: wx.getStorageSync("CordID"),
-    userInfo: wx.getStorageSync('userInfo'),
-    num: 1,
-    selectedDate: "",
-    selectedDateObject: "",
-    calendarShow: false,
-    timeShow: false,
-    minHour: 10,
-    maxHour: 20,
-    minDate: new Date().getTime(),
-    maxDate: new Date(2024, 10, 1).getTime(),
-    selectedTime: "12:00",
-    shownTime: "",
-    
-    ifTime: false,
-    selectedDateTime: "选择时间",
-    filter(type, options) {
-      if (type === "minute") {
-        return options.filter((option) => option % 30 === 0);
-      }
-
-      return options;
+    // ========================
+    // Data Initialization
+    // ========================
+    data: {
+        merchantData: app.globalData.currentMerchant,
+        order: app.globalData.currentOrder,
+        openid: wx.getStorageSync("openid"),
+        userInfo: wx.getStorageSync("userInfo"),
+        currentAppointments: [],
+        reservationShow: false,
+        calendarShow: false,
+        timeShow: false,
+        minHour: 10,
+        maxHour: 20,
+        minDate: new Date().getTime(),
+        maxDate: new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate()).getTime(),
+        userLocation: "",
+        selectedDate: "",
+        selectedTime: "",
+        shownTime: "",
+        selectedDateTime: "",
+        file: "",
     },
-    file: "",
-  },
 
-  onLoad: function (options) {
-    Date.prototype.addMinutes = function (h) {
-      return new Date(this.getTime() + h * 60 * 1000);
-    };
-    this.setData({
-      serviceID: options.serviceid,
-      merchantID: options.merchantid,
-    });
-    this.getServiceData(options.serviceid);
-  },
-
-  formatDate(date) {
-    date = new Date(date);
-    return `${date.getMonth() + 1}/${date.getDate()}`;
-  },
-
-  async getServiceData(serviceID) {
-    const res = await wx.cloud
-      .database()
-      .collection("service")
-      .doc(serviceID)
-      .get();
-
-    await this.getMerchantData(res.data.merchant);
-    await this.getPreviousAppointmentTime(res.data.merchant);
-
-    this.setData({
-      serviceData: res.data,
-      total: res.data.USDPrice,
-    });
-  },
-
-  async getMerchantData(merchantID) {
-    const res = await wx.cloud
-      .database()
-      .collection("merchant")
-      .doc(merchantID)
-      .get();
-
-    var merchantData = res.data;
-
-    const leaderData = await this.getUserData(merchantData.leader);
-
-    merchantData.leaderData = leaderData;
-
-    this.setData({
-      merchantData: merchantData,
-    });
-  },
-
-  getUserData(userID) {
-    return new Promise((resolve, reject) => {
-      wx.cloud
-        .database()
-        .collection("user")
-        .where({
-          _id: userID,
-        })
-        .get()
-        .then((res) => {
-          resolve(res.data[0]);
-        })
-        .catch((err) => {
-          reject(err);
+    // ========================
+    // Lifecycle Methods
+    // ========================
+    onLoad: async function (options) {
+        const currentAppointments = await getCurrentAppointments(options.merchantid);
+        this.setData({
+            currentAppointments: currentAppointments,
+            total: options.total,
         });
-    });
-  },
-  async getPreviousAppointmentTime(merchantID) {
-    let db = wx.cloud.database();
-    const _ = db.command;
-    const res = await wx.cloud
-      .database()
-      .collection("orders")
-      .where({
-        merchant: merchantID,
-        date: _.gt(new Date()),
-      })
-      .get();
+    },
 
-    var previousAppointmentList = [];
-    res.data.forEach((v) => {
-      let date = new Date(v.date);
-      previousAppointmentList.push(date);
-      previousAppointmentList.push(date.addMinutes(30));
-    });
+    // ========================
+    // Calendar Methods
+    // ========================
+    onOpenCalendar() {
+        this.setData({ calendarShow: true });
+    },
+    onCloseCalendar() {
+        this.setData({ calendarShow: false });
+    },
+    onConfirmDate(e) {
+        const selectedDateObject = new Date(e.detail);
+        const { startTime, endTime } = this.getAvailableTimesForSelectedDay(selectedDateObject);
+        if (startTime == 0 || endTime == 0) {
+            wx.showToast({
+                title: "当日无档期，请重选日期",
+                icon: "none",
+            });
+            return;
+        }
+        this.setData({
+            calendarShow: false,
+            selectedDate: formatMonthAndDay(e.detail),
+            selectedTime: "",
+            shownTime: "",
+            minHour: startTime,
+            maxHour: endTime,
+        });
+    },
 
-    this.setData({
-      previousAppointmentList: previousAppointmentList,
-    });
-  },
+    getAvailableTimesForSelectedDay(selectedDateObject) {
+        const merchantAvailableTimes = this.data.merchantData.availableTimesJson;
+        const selectedWeekday = selectedDateObject.getDay();
 
-  onNumberChange(e){
-    this.setData({
-      num: e.detail,
-      total: e.detail * this.data.serviceData.USDPrice
-    })
-  },
+        let startTime = 0;
+        let endTime = 0;
 
-  //Calendar Code
-  onOpenCalendar() {
-    this.setData({ calendarShow: true });
-  },
-  onCloseCalendar() {
-    this.setData({ calendarShow: false });
-  },
-  onConfirmDate(e) {
-    let merchantAvailableTimes = this.data.merchantData.availableTimesJson;
-    let selectedDateObject = new Date(e.detail);
-    let selectedWeekday = selectedDateObject.getDay();
-    var startTime = 0;
-    var endTime = 0;
-    var ifTime = false;
-    merchantAvailableTimes.forEach((v) => {
-      if (v.day == selectedWeekday) {
-        (startTime = v.startTime), (endTime = v.endTime);
-      }
-    });
+        merchantAvailableTimes.forEach((timeSlot) => {
+            if (timeSlot.day === selectedWeekday) {
+                startTime = timeSlot.startTime;
+                endTime = timeSlot.endTime;
+            }
+        });
 
-    if (startTime != 0 || endTime != 0) {
-      ifTime = true;
-    }
+        return { startTime, endTime };
+    },
 
-    this.setData({
-      calendarShow: false,
-      selectedDate: this.formatDate(e.detail),
-      minHour: startTime,
-      maxHour: endTime,
-      selectedDateObject: new Date(e.detail),
-      ifTime: ifTime,
-    });
-  },
+    // ========================
+    // Location Methods
+    // ========================
 
-  //Time Picker Code
+    onChangeLocation(e) {
+        this.setData({
+            userLocation: e.detail,
+        });
+    },
 
-  onOpenTimePicker(e) {
-    if (this.data.selectedDate == "") {
-      wx.showToast({
-        title: "请先选择日期",
-        icon: "none",
-      });
-    } else if (this.data.ifTime == false) {
-      wx.showToast({
-        title: "该日无档期，请重选日期",
-        icon: "none",
-      });
-    } else {
-      this.setData({
-        timeShow: true,
-      });
-    }
-  },
+    // ========================
+    // Time Picker Methods
+    // ========================
+    onOpenReservation(e) {
+        this.setData({ reservationShow: true });
+    },
+    onReservationClose(e) {
+        this.setData({ reservationShow: false });
+    },
+    onOpenTimePicker(e) {
+        if (this.data.selectedDate == "") {
+            wx.showToast({
+                title: "请先选择日期",
+                icon: "none",
+            });
+        } else {
+            this.setData({
+                timeShow: true,
+            });
+        }
+    },
+    onConfirmTime(e) {
+        this.setData({
+            selectedTime: e.detail,
+        });
+    },
+    onTimeClose(e) {
+        this.setData({
+            timeShow: false,
+            shownTime: e.detail,
+        });
+    },
+    onConfirmDateTime(e) {
+        const selectedDate = this.data.selectedDate;
+        const selectedTime = this.data.selectedTime;
+        const selectedDateTime = this.constructSelectedDateTime(selectedDate, selectedTime);
 
-  onConfirmTime(e) {
-    this.setData({
-      selectedTime: e.detail,
-    });
-  },
+        if (this.isTimeSlotFull(selectedDateTime)) {
+            wx.showToast({
+                title: "该档期已满，请重选",
+                icon: "none",
+            });
+        } else {
+            this.setData({
+                selectedDateTime: `${selectedDate} ${selectedTime}`,
+                selectedDateObject: constructSelectedDateTime(selectedDate, selectedTime),
+                reservationShow: false,
+            });
+        }
+    },
 
-  onTimeClose(e) {
-    this.setData({
-      timeShow: false,
-      shownTime: e.detail,
-    });
-  },
+    constructSelectedDateTime(date, time) {
+        const currentYear = new Date().getFullYear();
+        return new Date(`${currentYear}/${date} ${time}`);
+    },
 
-  onConfirmDateTime(e) {
-    console.log(e);
-    let selectedDate = this.data.selectedDate;
-    let selectedTime = this.data.selectedTime;
-    let selectedDataTime = new Date(
-      new Date().getFullYear() + "/" + selectedDate + " " + selectedTime
-    );
-    var ifFull = false;
-    // if (selectedDataTime in this.data.previousAppointmentList) {
+    isTimeSlotFull(selectedDateTime) {
+        return this.data.currentAppointments.some((appointment) => appointment.getTime() === selectedDateTime.getTime());
+    },
 
-    // }
-    this.data.previousAppointmentList.forEach((v) => {
-      if (selectedDataTime.getTime() == v.getTime()) {
-        ifFull = true;
-      }
-    });
-
-    if (!ifFull) {
-      this.selectComponent("#item").toggle();
-      this.setData({
-        selectedDateTime: selectedDate + " " + selectedTime,
-      });
-    } else {
-      wx.showToast({
-        title: "改时间已满，请重选",
-        icon: "none",
-      });
-    }
-  },
-  upload(e) {
-    wx.chooseMedia({
+    // ========================
+    // File Handling Methods
+    // ========================
+    upload(e) {
+        wx.chooseMedia({
             media: ["image"],
             count: 1,
             sizeType: ["original", "compressed"],
             sourceType: ["album", "camera"],
         })
-        .then((res) => {
-            console.log(res);
-            this.setData({
-                file: res.tempFiles[0].tempFilePath,
+            .then((res) => {
+                this.setData({
+                    file: res.tempFiles[0].tempFilePath,
+                });
+            })
+            .catch((err) => {
+                wx.showToast({
+                    title: "上传失败",
+                    icon: "error",
+                });
             });
-        })
-        .catch((err) => {
-            wx.showToast({
-                title: "上传失败",
-                icon: "error",
+    },
+    enlarge(e) {
+        wx.previewImage({
+            current: e.currentTarget.dataset.url,
+            urls: [e.currentTarget.dataset.url],
+        });
+    },
+
+    // ========================
+    // Order Handling Methods
+    // ========================
+    async submitOrder(e) {
+        if (!this.isDateTimeSelected()) {
+            this.showDateTimeError();
+            return;
+        }
+
+        wx.showLoading({ title: "创建订单中" });
+
+        try {
+            const screenshotID = this.generateScreenshotID();
+            const uploadResult = await this.uploadScreenshot(screenshotID);
+
+            const transactionID = await this.createTransaction(uploadResult.fileID);
+            if (!transactionID) throw "transaction creation failed";
+
+            const orderID = await this.createOrder(transactionID);
+            if (!orderID) throw "order creation failed";
+
+            this.handleOrderSuccess(orderID);
+        } catch (err) {
+            this.handleOrderError(err);
+        }
+    },
+
+    isDateTimeSelected() {
+        return this.data.selectedDateTime !== "选择时间";
+    },
+
+    showDateTimeError() {
+        wx.showToast({
+            title: "请先选择预约时间",
+            icon: "none",
+        });
+    },
+
+    generateScreenshotID() {
+        return Date.now() + "Transaction.jpg";
+    },
+
+    async uploadScreenshot(screenshotID) {
+        return wx.cloud.uploadFile({
+            cloudPath: screenshotID,
+            filePath: this.data.file,
+        });
+    },
+
+    async createTransaction(screenshotFileID) {
+        const { total, order, userInfo, merchantData } = this.data;
+
+        const res = await wx.cloud
+            .database()
+            .collection("transactions")
+            .add({
+                data: {
+                    sender: userInfo._id,
+                    receiver: merchantData.owner,
+                    amount: total,
+                    order: order,
+                    screenshot: screenshotFileID,
+                },
+            });
+        return res._id;
+    },
+
+    async createOrder(transactionID) {
+        const { merchantData, userInfo, userLocation, total, order, selectedDateObject } = this.data;
+
+        const res = await wx.cloud
+            .database()
+            .collection("orders")
+            .add({
+                data: {
+                    merchant: merchantData._id,
+                    participant: userInfo._id,
+                    transaction: transactionID,
+                    order: order,
+                    date: selectedDateObject,
+                    status: "pending",
+                    total: total,
+                    userLocation: userLocation,
+                    createTime: new Date(),
+                },
+            });
+
+        return res._id;
+    },
+
+    handleOrderSuccess(orderID) {
+        wx.hideLoading();
+        wx.showToast({
+            title: "订单创建成功",
+            icon: "success",
+        }).then(() => {
+            wx.reLaunch({
+                url: "/pages/orderDetail/index?orderid=" + orderID,
             });
         });
-  },
-  enlarge(e) {
-      wx.previewImage({
-          current: e.currentTarget.dataset.url,
-          urls: [e.currentTarget.dataset.url],
-      });
-  },
-  uploadFilePromise(fileName, chooseResult) {
-      return wx.cloud.uploadFile({
-          cloudPath: fileName,
-          filePath: chooseResult.url
-      });
-  },
+    },
 
-  async submitOrder(e) {
-    if (this.data.selectedDateTime == "选择时间") {
-      wx.showToast({
-        title: "请先选择预约时间",
-        icon: "none",
-      });
-      return;
-    }
-    let subscribeRes = await wx.requestSubscribeMessage({
-      tmplIds: ["t99WD8_SUi4kmPcRHhAC_ZMcwZDTCGMzm4MvdC66W6E"]});
-    console.log(subscribeRes);
-    wx.showLoading({
-        title: "创建订单中"
-    });
-
-  var screenshotID = Date.now() + "Transaction.jpg";
-
-  try {
-      const res = await wx.cloud.uploadFile({
-          cloudPath: screenshotID,
-          filePath: this.data.file,
-      });
-
-      const transactionRes = await wx.cloud.callFunction({
-          name: "createTransaction",
-          data: {
-              category: "reservation",
-              sender: this.data.cordid,
-              receiver: this.data.merchantData.leader,
-              amount: this.data.total,
-              service: this.data.serviceData._id,
-              screenshot: res.fileID,
-          },
-      });
-      if (!transactionRes.result._id) {
-        throw "transaction creation failed";
-      }
-
-      const orderRes = await wx.cloud.callFunction({
-          name: "createOrder",
-          data: {
-              category: "reservation",
-              merchant: this.data.merchantData._id,
-              participant: this.data.cordid,
-              transaction: transactionRes.result._id,
-              service: this.data.serviceData._id,
-              date: new Date(new Date().getFullYear() + "/" + this.data.selectedDateTime),
-              num: this.data.num,
-              status: "pending",
-          },
-      });
-      wx.hideLoading({});
-      if (orderRes.result._id) {
-          wx.showToast({
-              title: "订单创建成功",
-              icon: "success",
-          }).then((res) => {
-              wx.reLaunch({
-                  url: "/pages/orderDetail/index?orderid=" + orderRes.result._id,
-              });
-          });
-      } else {
-          throw "failed";
-      }
-  } catch (err) {
-      console.log(err);
-      wx.showToast({
-          title: "订单创建失败",
-          icon: "error",
-      });
-  }
-  },
+    handleOrderError(err) {
+        console.log(err);
+        wx.hideLoading();
+        wx.showToast({
+            title: "订单创建失败",
+            icon: "error",
+        });
+    },
 });

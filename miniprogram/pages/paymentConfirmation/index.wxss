@@ -6,162 +6,19 @@ view.all {
   margin: 0px auto;
   padding-bottom: 170rpx;
 }
-view.all view.serviceRow {
-  margin-top: 15px;
-  display: flex;
-  align-items: center;
+view.all .orderCard {
+  margin-top: 12rpx;
+  background-color: #fff;
+  padding: 40rpx 0rpx;
 }
-view.all view.serviceRow view.left {
-  padding-left: 10rpx;
-  flex: 40%;
-}
-view.all view.serviceRow view.left image {
-  width: 230rpx;
-  height: 230rpx;
-  border-radius: 8px;
-}
-view.all view.serviceRow view.right {
-  flex: 60%;
-  text-align: right;
-  align-items: center;
-}
-view.all view.serviceRow view.right .serviceName {
-  font-family: PingFangSC-Semibold;
-  font-size: 42rpx;
-  color: #363938;
-}
-view.all view.serviceRow view.right .line {
-  margin-top: 33rpx;
-  margin-bottom: 33rpx;
-  width: 100%;
-  height: 1rpx;
-  background-color: #e4e5e5;
-}
-view.all view.serviceRow view.right view.detail {
-  display: flex;
-  width: 100%;
-  text-align: right;
-}
-view.all view.serviceRow view.right view.detail .icon {
-  padding-right: 5rpx;
-}
-view.all view.serviceRow view.right view.detail .serviceLocation {
-  flex: 30%;
-  font-family: PingFangSC-Regular;
-  font-size: 21rpx;
-  color: #9f9f9f;
-}
-view.all view.serviceRow view.right view.detail .serviceTime {
-  flex: 60%;
-  font-family: PingFangSC-Regular;
-  font-size: 21rpx;
-  color: #969799;
-  display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-  white-space: normal !important;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-}
-view.all view.paymentRow {
-  margin-top: 55rpx;
-  background: #ffffff;
-  box-shadow: 0px 5px 12px #ebedf0;
-  padding: 25px 15px 25px 20px;
-  border-radius: 8px;
-  display: flex;
-}
-view.all view.paymentRow view.left {
-  flex: 70%;
-}
-view.all view.paymentRow view.left text {
-  font-family: PingFangSC-Semibold;
-  font-size: 31rpx;
-  color: #363938;
-  border-bottom: #369472 1px solid;
-  padding: 5px;
-}
-view.all view.paymentRow view.right {
-  flex: 30%;
-}
-view.all view.paymentRow view.right .dropdownGroup {
-  height: 25px;
-  box-shadow: none;
-}
-view.all view.paymentRow view.right .dropdownText {
-  font-family: PingFangSC-Regular;
-  font-size: 13px;
-  color: #969799;
-}
-view.all view.paymentRow view.right .dateTimeConfirm {
-  padding: 15px 0px 10px 0px;
-  width: 40%;
-  margin: 0px auto;
-}
-view.all view.paymentRow view.right .dateTimeConfirmButton {
-  border-radius: 10px;
-  background: #369472;
-  font-family: PingFangSC-Semibold;
-  font-size: 14px;
-  color: #ffffff;
-}
-view.all .transferInfo {
-  background-color: white;
-  margin-top: 40rpx;
-  box-shadow: 0px 5px 12px #ebedf0;
-  padding: 20px 15px 20px 20px;
-  border-radius: 8px;
-}
-view.all .transferInfo .title text {
-  font-family: PingFangSC-Semibold;
-  font-size: 31rpx;
-  color: #363938;
-  border-bottom: #369472 1px solid;
-  padding: 5px;
-}
-view.all .transferInfo .info {
-  margin-top: 30rpx;
-}
-view.all .transferInfo .info text {
-  font-family: PingFangSC-Regular;
-  font-size: 30rpx;
-  color: #363938;
-  line-height: 2em;
-}
-view.all .previewImage {
-  background-color: white;
-  margin-top: 20px;
-  box-shadow: 0px 5px 12px #ebedf0;
-  padding: 15px;
-  border-radius: 8px;
-}
-view.all .previewImage .title text {
-  font-family: PingFangSC-Semibold;
-  font-size: 31rpx;
-  color: #363938;
-  border-bottom: #369472 1px solid;
-  padding: 5px;
+view.all .location .title {
+  margin-bottom: 20rpx;
 }
 view.all .previewImage .preview {
   margin-top: 40rpx;
-  text-align: center;
 }
 view.all .previewImage .preview image {
-  box-shadow: 0px 5px 12px #ebedf0;
   width: 100%;
-}
-view.all .previewImage button.reupload {
-  width: 40%;
-  margin: 0px auto;
-  margin-top: 20rpx;
-  background: rgba(54, 148, 114, 0.8);
-  border-radius: 20rpx;
-  font-family: PingFangSC;
-  font-size: 25rpx;
-  color: #fafcfc;
-  padding: 5rpx 0rpx 5rpx 0rpx;
-  box-shadow: 0px 5px 12px #ebedf0;
 }
 view.bottom {
   width: 100%;
@@ -169,25 +26,16 @@ view.bottom {
   bottom: 0px;
   display: flex;
   background-color: white;
-  padding: 15px 20px 15px 20px;
-}
-view.bottom view.priceTag {
-  flex: 40%;
-  font-family: PingFangSC-Medium;
-  font-size: 25px;
-  color: #363938;
-}
-view.bottom view.priceTag text {
-  font-family: PingFangSC-Medium;
-  font-size: 15px;
+  padding: 15px 20px 30px 20px;
+  align-items: center;
+  justify-content: space-between;
 }
 view.bottom view.confirmButton {
-  flex: 40%;
+  width: 50%;
   text-align: center;
   padding-right: 10rpx;
 }
 view.bottom view.confirmButton .payButton {
-  box-shadow: 0px 5px 12px #ebedf0;
   width: 70%;
   background: #369472;
   border-radius: 15rpx;
@@ -197,6 +45,27 @@ view.bottom view.confirmButton .payButton {
 }
 view.bottom .timePickerToolBar {
   color: #369472;
+}
+view.reservationModal {
+  padding: 0rpx 30rpx 40rpx 30rpx;
+}
+view.reservationModal .underlineCardBold {
+  box-shadow: none;
+  padding-top: 0rpx;
+  padding-bottom: 0rpx;
+}
+view.reservationModal .dateTimeConfirm {
+  padding: 30rpx 0px 0px 0px;
+  width: 40%;
+  margin: 0px auto;
+}
+view.reservationModal .dateTimeConfirmButton {
+  border-radius: 10px;
+  background: #369472;
+  font-family: PingFangSC-Semibold;
+  font-size: 14px;
+  color: #ffffff;
+  margin-top: 20rpx;
 }
 .calendar {
   z-index: -10;

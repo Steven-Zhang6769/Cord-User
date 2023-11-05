@@ -101,81 +101,118 @@ view.header .backButton {
   height: 20px;
   margin-top: -40px;
 }
-.body view.mainBody {
+.body .mainBody {
   width: 95%;
   margin: 0px auto;
-  padding-bottom: 40px;
+  margin-top: 30rpx;
+  padding-bottom: 70rpx;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30rpx;
 }
-.body view.mainBody view.serviceRow {
-  margin-top: 40rpx;
+.body .mainBody view.serviceRow {
   border-radius: 15rpx;
   background-color: white;
   box-shadow: 0px 5px 12px #ebedf0;
-  display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 0px 15px 0px;
+  padding: 15px;
 }
-.body view.mainBody view.serviceRow view.left {
-  flex: 27%;
-  text-align: center;
-}
-.body view.mainBody view.serviceRow view.left image {
-  width: 155rpx;
-  height: 155rpx;
+.body .mainBody view.serviceRow image {
+  width: 100%;
+  height: 250rpx;
+  margin: 0px auto;
   border-radius: 30rpx;
   box-shadow: 0px 5px 12px #ebedf0;
 }
-.body view.mainBody view.serviceRow view.middle {
-  color: #363938;
-  text-align: left;
-  flex: 55%;
-}
-.body view.mainBody view.serviceRow view.middle view.serviceTitle {
+.body .mainBody view.serviceRow .middle .serviceTitle {
+  margin-top: 10rpx;
   font-size: 30rpx;
   font-weight: 400;
 }
-.body view.mainBody view.serviceRow view.middle .price {
-  margin-top: 35rpx;
+.body .mainBody view.serviceRow view.bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25rpx;
 }
-.body view.mainBody view.serviceRow view.right {
-  flex: 16%;
-  text-align: center;
-  align-self: flex-end;
+.body .ifCart {
+  padding-bottom: 180rpx;
 }
-view.pics {
+.serviceDetail {
+  width: 87%;
   margin: 0px auto;
 }
-view.pics swiper {
+.serviceDetail image {
+  width: 100%;
+  height: 440rpx;
+  border-radius: 20rpx;
+  box-shadow: 0px 5px 12px #ebedf0;
+  margin-top: 15rpx;
+}
+.serviceDetail .titles {
+  margin-top: 20rpx;
+  display: flex;
+  justify-content: space-between;
+}
+.serviceDetail .titles .left .h7 {
+  margin-top: 15rpx;
+  font-size: 26rpx;
+}
+.serviceDetail .titles .price {
+  font-family: PingFangSC-Semibold;
+  font-size: 70rpx;
+  color: #369472;
+}
+.serviceDetail .titles .price text {
+  margin-right: 5rpx;
+}
+.merchantDetail {
+  width: 87%;
+  margin: 0px auto;
+  margin-top: 15rpx;
+}
+.merchantDetail view.pics swiper {
   background-color: white;
   text-align: center;
   height: 530rpx;
 }
-view.pics swiper-item .wrapper {
+.merchantDetail view.pics swiper-item .wrapper {
   width: 95%;
   height: 460rpx;
   margin: 0px auto;
-  border-radius: 16rpx;
+  border-radius: 20rpx;
   box-shadow: 0px 5px 12px #ebedf0;
 }
-view.pics swiper-item .wrapper image {
+.merchantDetail view.pics swiper-item .wrapper image {
   height: 440rpx;
   width: 100%;
 }
-view.billboard {
-  background-color: white;
-  border-radius: 15rpx;
-  padding: 35rpx 40rpx 35rpx 40rpx;
+.cart {
+  width: 96%;
+  margin: 0px auto;
+  padding-left: 15rpx;
+  padding-right: 15rpx;
+  padding-top: 15rpx;
+  font-family: PingFangSC-Regular;
+  z-index: 50;
 }
-view.billboard view.title {
-  padding-bottom: 7px;
-  margin-bottom: 5px;
+.cartDetail .orderCard {
+  background-color: #ffffff;
+}
+.cartDetail .total {
+  width: 93%;
+  margin: 0px auto;
+  margin-top: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.cartDetail .total .right {
   font-family: PingFangSC-Semibold;
-  font-size: 40rpx;
-  border-bottom: 1px solid #369472;
-  width: 30%;
+  font-size: 50rpx;
+  color: #369472;
 }
-view.billboard text {
+view.underlineCard .content {
   font-family: PingFangSC;
   font-size: 14px;
   color: #656565;

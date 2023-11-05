@@ -51,15 +51,6 @@ view.postLogin view.header view.wrapper {
   height: 50%;
   background: rgba(9, 9, 9, 0.5);
 }
-view.postLogin view.header view.wrapper .switchButton {
-  position: absolute;
-  left: 635rpx;
-}
-view.postLogin view.header view.wrapper .switchButton image {
-  width: 85rpx;
-  height: 85rpx;
-  border-radius: 0px;
-}
 view.postLogin view.header view.wrapper image {
   margin-top: 30rpx;
   width: 190rpx;

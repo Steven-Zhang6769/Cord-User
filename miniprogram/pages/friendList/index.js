@@ -20,7 +20,7 @@ Page({
         return new Promise((resolve, reject) => {
             wx.cloud
                 .database()
-                .collection("user")
+                .collection("users")
                 .where({
                     openid: userID,
                 })

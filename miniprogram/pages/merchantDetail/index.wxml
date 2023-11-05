@@ -3,7 +3,8 @@
         <van-icon name="arrow-left" size="20px" color="white" />
     </view>
 </view>
-<view class="body">
+<van-skeleton title avatar row="7" loading="{{ loading }}" />
+<view class="body" wx:if="{{ !loading }}">
     <view class="merchantInfo">
         <view class="merchantDetail">
             <view class="left">
@@ -23,8 +24,9 @@
                 <view class="title">评分</view>
                 <van-icon name="friends-o" size="30px" color="#369472" custom-class="icon" />
                 <view class="desc">
-                    <text wx:if="{{ totalRated != 0 }}">{{ rating }}/5</text>
-                    <text wx:if="{{ totalRated == 0 }}">暂无</text>
+                    <van-icon name="star" color="#FFCD22" />
+                    <text wx:if="{{ avgRating != 0 }}" style="margin-left: 5rpx">{{ avgRating }}</text>
+                    <text wx:if="{{ avgRating == 0 }}">暂无</text>
                 </view>
                 <view class="vertical_line"></view>
             </view>
@@ -45,70 +47,93 @@
             </view>
         </view>
         <view class="showDetail" bindtap="showMerchantDetail">
-            <van-icon name="arrow-down" color="#369472" style="margin-top: 25rpx"></van-icon>
+            <van-icon name="arrow-down" style="margin-top: 25rpx"></van-icon>
         </view>
     </view>
-    <van-skeleton title row="3" loading="{{ loading }}"></van-skeleton>
-    <view class="mainBody" wx:if="{{ !loading }}">
-        <view
-            class="serviceRow"
-            wx:for="{{ merchantData.serviceData }}"
-            bindtap="serviceDetailNavigator"
-            data-serviceid="{{ item._id }}"
-            data-data="{{ item }}">
-            <view class="left">
-                <image src="{{ item.picture }}"></image>
-            </view>
-            <view class="middle">
+    <view class="mainBody {{ showCart ? 'ifCart' : '' }}" wx:if="{{ !loading }}">
+        <view class="serviceRow" wx:for="{{ serviceData }}">
+            <image src="{{ item.picture }}" mode="aspectFill" bindtap="showServiceDetail" data-data="{{ item }}"></image>
+            <view class="middle" bindtap="showServiceDetail" data-data="{{ item }}">
                 <view class="serviceTitle h3">{{ item.serviceName }}</view>
                 <view class="h7">
                     {{ item.serviceSubtitle }}
                 </view>
-                <view class="price h3">${{ item.USDPrice }}</view>
             </view>
-            <view class="right">
-                <van-icon name="add" size="45rpx" color="#369472" wx:if="{{ !item.ifOrder }}" />
+            <view class="bottom">
+                <view class="price h3">${{ item.USDPrice }}</view>
+                <van-icon name="add" size="45rpx" color="#369472" wx:if="{{ !item.num }}" bindtap="addServiceToCart" data-id="{{ item._id }}" />
                 <van-stepper
                     custom-class="stepper"
-                    value="{{ 0 }}"
+                    value="{{ 1 }}"
                     min="0"
                     bind:change="onStepperChange"
                     data-id="{{ item._id }}"
                     input-width="25px"
                     button-size="25px"
-                    wx:if="{{ item.ifOrder }}" />
+                    wx:if="{{ item.num }}" />
             </view>
         </view>
     </view>
 </view>
-<van-action-sheet show="{{ showMerchantDetail }}" title="店铺详情" bind:close="closeDetail" style="background-color: #f7f8fa">
-    <view class="pics">
-        <swiper interval="6000" autoplay circular indicator-dots indicator-active-color="#369472">
-            <swiper-item wx:for="{{ merchantData.subPic }}" wx:key="_id">
-                <view class="wrapper">
-                    <image mode="aspectFit" src="{{ item }}" bindtap="enlarge" data-url="{{ item }}"></image>
-                </view>
-            </swiper-item>
-        </swiper>
+<van-action-sheet show="{{ showMerchantDetail }}" title="店铺详情" bind:close="closeMerchantDetail" style="background-color: #f7f8fa">
+    <view class="merchantDetail">
+        <view class="pics">
+            <swiper interval="6000" autoplay circular indicator-dots indicator-active-color="#369472">
+                <swiper-item wx:for="{{ merchantData.subPic }}" wx:key="_id">
+                    <view class="wrapper">
+                        <image mode="aspectFit" src="{{ item }}" bindtap="enlarge" data-url="{{ item }}"></image>
+                    </view>
+                </swiper-item>
+            </swiper>
+        </view>
+        <view class="underlineCard">
+            <text class="content">{{ merchantData.billboard }}</text>
+        </view>
     </view>
-    <view class="billboard">
-        <text class="content">{{ merchantData.billboard }}</text>
+</van-action-sheet>
+<van-action-sheet show="{{ showServiceDetail }}" title="服务详情" bind:close="closeServiceDetail" style="background-color: #f7f8fa">
+    <view class="serviceDetail">
+        <image src="{{ selectedServiceData.picture }}" mode="aspectFill"></image>
+        <view class="titles">
+            <view class="left">
+                <view class="h1">{{ selectedServiceData.serviceName }}</view>
+                <view class="h7">{{ selectedServiceData.serviceSubtitle }}</view>
+            </view>
+            <view class="price"> <text>$</text>{{ selectedServiceData.USDPrice }} </view>
+        </view>
+        <view class="underlineCard">
+            <view class="h4">服务描述:</view>
+            <text class="content">{{ selectedServiceData.serviceDescription }}</text>
+        </view>
     </view>
 </van-action-sheet>
 
-<van-goods-action wx:if="{{ ifOrder }}" custom-class="goodsAction">
-    <van-goods-action-icon icon="chat-o" text="私信商家" bind:click="contactMerchant" text-class="iconText" />
-    <van-goods-action-icon icon="cart-o" text="购物车" bind:click="showCart" info="{{ totalOrder }}" text-class="iconText" icon-class="goodsIcon" />
-    <van-goods-action-button color="#369472" class="submit" text="提交订单" bind:click="submitOrder" />
+<van-goods-action wx:if="{{ showCart }}" custom-class="cart">
+    <van-goods-action-icon icon="cart-o" text="购物车" bind:click="showCartDetail" info="{{ totalOrder }}" text-class="iconText" />
+    <van-goods-action-button color="#36947299" text="取消订单" bind:click="cancelOrder" />
+    <van-goods-action-button color="#369472" text="提交订单" bind:click="submitOrder" />
 </van-goods-action>
-<van-action-sheet show="{{ show }}" bind:close="closeCart">
-    <van-empty image="https://img.yzcdn.cn/vant/custom-empty-image.png" description="暂无菜品" wx:if="{{ totalOrder == 0 }}" />
-    <van-card
-        wx:for="{{ serviceData }}"
-        wx:if="{{ item.num && item.num != 0 }}"
-        num="{{ item.num }}"
-        price="{{ item.price }}"
-        desc="{{ item.itemDescription }}"
-        title="{{ item.itemName }}"
-        thumb="{{ item.picture }}" />
+<van-action-sheet show="{{ showCartDetail }}" title="已选服务" bind:close="closeCartDetail">
+    <view class="cartDetail">
+        <van-empty image="https://img.yzcdn.cn/vant/custom-empty-image.png" description="暂无服务" wx:if="{{ totalOrder == 0 }}" />
+        <van-card
+            wx:for="{{ serviceData }}"
+            wx:if="{{ item.num && item.num != 0 }}"
+            num="{{ item.num }}"
+            price="{{ item.USDPrice }}"
+            desc="{{ item.serviceDescription }}"
+            title="{{ item.serviceName }}"
+            thumb="{{ item.picture }}"
+            thumbMode="aspectFill"
+            currency="$"
+            custom-class="orderCard"
+            title-class="h4"
+            desc-class="h7"
+            price-class="price"
+            thumb-class="thumb" />
+        <view class="total">
+            <view class="left h3">总计:</view>
+            <view class="right">${{ total }}</view>
+        </view>
+    </view>
 </van-action-sheet>

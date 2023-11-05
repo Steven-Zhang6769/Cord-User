@@ -3,11 +3,11 @@ import { getAllMerchantData } from "../../utils/merchantUtils";
 import { fetchDataFromDB } from "../../utils/dbUtils";
 Page({
     data: {
+        loading: true,
         searchList: [],
         merchants: [],
         sliders: [],
         loginStatus: app.globalData.loginStatus,
-        cordID: wx.getStorageSync("CordID"),
         userInfo: wx.getStorageSync("userInfo"),
         showResult: false,
         cardCur: 1,
@@ -20,7 +20,7 @@ Page({
         categoryValue: 0,
     },
 
-    onLoad: function (options) {
+    onLoad: async function (options) {
         this.refreshData();
     },
 
@@ -29,14 +29,20 @@ Page({
     },
 
     async refreshData() {
+        wx.showLoading({ title: "加载中" });
         const merchants = await getAllMerchantData();
-        this.getSlider();
-        this.setData({ merchants: merchants });
+        const sliders = await this.getSlider();
+        this.setData({
+            merchants: merchants,
+            sliders: sliders,
+            loading: false,
+        });
+        wx.hideLoading();
     },
 
     async getSlider() {
-        const res = await wx.cloud.database().collection("slider").get();
-        this.setData({ sliders: res.data });
+        const res = await wx.cloud.database().collection("sliders").get();
+        return res.data;
     },
 
     search: async function (e) {
@@ -70,7 +76,7 @@ Page({
     },
 
     swiperNavigator: function (e) {
-        if (!this.data.cordID) {
+        if (!this.data.userInfo) {
             wx.showToast({ title: "请先注册/登陆" });
         }
         wx.navigateTo({ url: e.currentTarget.dataset.url });
