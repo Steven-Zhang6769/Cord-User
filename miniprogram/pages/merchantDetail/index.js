@@ -77,7 +77,6 @@ Page({
         this.setData({ showMerchantDetail: false });
     },
     showServiceDetail(e) {
-        console.log(e);
         this.setData({
             showServiceDetail: true,
             selectedServiceData: e.currentTarget.dataset.data,
@@ -144,8 +143,9 @@ Page({
             });
             return;
         }
+        let order = this.data.serviceData.filter((v) => v.num && v.num > 0);
         app.globalData.currentMerchant = this.data.merchantData;
-        app.globalData.currentOrder = this.data.serviceData;
+        app.globalData.currentOrder = order;
         wx.navigateTo({
             url: "/pages/paymentConfirmation/index?total=" + this.data.total + "&merchantid=" + this.data.merchantData._id,
         });

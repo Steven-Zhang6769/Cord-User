@@ -76,10 +76,9 @@ async function confirmAndNotifyFriendship(event) {
 }
 
 async function addFriend(event) {
-    console.log(event);
     const { requesterOpenID, requesterInfo, receiverOpenID, receiverInfo, chatRoomID } = event;
     const res1 = await db
-        .collection("user")
+        .collection("users")
         .where({ openid: requesterOpenID })
         .update({
             data: {

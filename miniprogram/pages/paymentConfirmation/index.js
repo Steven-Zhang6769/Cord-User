@@ -1,6 +1,6 @@
 const app = getApp();
 import { getCurrentAppointments } from "../../utils/merchantUtils";
-import { formatMonthAndDay, constructSelectedDateTime } from "../../utils/util";
+import { formatMonthDay, createFullDateTime, formatFullDateTime } from "../../utils/util";
 
 Page({
     // ========================
@@ -20,6 +20,7 @@ Page({
         minDate: new Date().getTime(),
         maxDate: new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate()).getTime(),
         userLocation: "",
+        selectedYear: "",
         selectedDate: "",
         selectedTime: "",
         shownTime: "",
@@ -59,7 +60,8 @@ Page({
         }
         this.setData({
             calendarShow: false,
-            selectedDate: formatMonthAndDay(e.detail),
+            selectedDate: formatMonthDay(e.detail),
+            selectedYear: selectedDateObject.getFullYear(),
             selectedTime: "",
             shownTime: "",
             minHour: startTime,
@@ -127,9 +129,8 @@ Page({
         });
     },
     onConfirmDateTime(e) {
-        const selectedDate = this.data.selectedDate;
-        const selectedTime = this.data.selectedTime;
-        const selectedDateTime = this.constructSelectedDateTime(selectedDate, selectedTime);
+        const { selectedYear, selectedDate, selectedTime } = this.data;
+        const selectedDateTime = createFullDateTime(selectedYear, selectedDate, selectedTime);
 
         if (this.isTimeSlotFull(selectedDateTime)) {
             wx.showToast({
@@ -138,16 +139,11 @@ Page({
             });
         } else {
             this.setData({
-                selectedDateTime: `${selectedDate} ${selectedTime}`,
-                selectedDateObject: constructSelectedDateTime(selectedDate, selectedTime),
+                selectedDateTime: formatFullDateTime(selectedDateTime),
+                selectedDateObject: selectedDateTime,
                 reservationShow: false,
             });
         }
-    },
-
-    constructSelectedDateTime(date, time) {
-        const currentYear = new Date().getFullYear();
-        return new Date(`${currentYear}/${date} ${time}`);
     },
 
     isTimeSlotFull(selectedDateTime) {
@@ -233,8 +229,7 @@ Page({
     },
 
     async createTransaction(screenshotFileID) {
-        const { total, order, userInfo, merchantData } = this.data;
-
+        const { total, userInfo, merchantData } = this.data;
         const res = await wx.cloud
             .database()
             .collection("transactions")
@@ -243,8 +238,9 @@ Page({
                     sender: userInfo._id,
                     receiver: merchantData.owner,
                     amount: total,
-                    order: order,
                     screenshot: screenshotFileID,
+                    category: "screenshotUSD",
+                    createTime: new Date(),
                 },
             });
         return res._id;

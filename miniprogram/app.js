@@ -1,4 +1,5 @@
 // app.js
+import { getUserData } from "./utils/userUtils";
 App({
     globalData: {
         userInfo: null,
@@ -109,16 +110,7 @@ App({
             this.globalData.loginStatus = true;
             return;
         } else {
-            try {
-                let res = await wx.cloud.database().collection("users").where({ openid: openid }).get();
-                userInfo = res.data[0];
-                if (!userInfo) return;
-                wx.setStorageSync("userInfo", userInfo);
-                this.globalData.userInfo = userInfo;
-                this.globalData.loginStatus = true;
-            } catch (error) {
-                console.log("error loading user", error);
-            }
+            getUserData(openid);
         }
     },
 });

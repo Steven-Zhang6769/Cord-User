@@ -10,6 +10,69 @@
         {
           "name": "",
           "pathName": "pages/orderDetail/index",
+          "query": "orderid=41d77edc654827e10955a25355896282",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/orderList/index",
+          "query": "type=history",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/orderList/index",
+          "query": "history=true",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/orderList/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/transactionList/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/transactionList/index",
+          "query": "openid=5d41bcd363bdca810075ce1204a13a3d&storeid=93e4b6a063f1c61800faa656366e8610&cordid=5d41bcd363bdca810075ce1204a13a3d",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/user/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/orderDetail/index",
+          "query": "orderid=fd1ab1d56547ccbb01c84ee0571a16f4",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/paymentConfirmation/index",
+          "query": "total=130&merchantid=5acccc6863bdd31600731f4f01ccc10f",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/orderDetail/index",
           "query": "orderid=aeff410b6547aeaa01852b5235cb3045",
           "launchMode": "default",
           "scene": null

@@ -15,9 +15,6 @@
         "pages/orderDetail/index",
         "pages/login/login",
         "pages/categoryList/index",
-        "pages/updateService/index",
-        "pages/updateMerchant/index",
-        "pages/chefDetail/index",
         "pages/foodOrder/index",
         "pages/foodOrderDetail/index",
         "pages/example/chatroom_example/haoyoupage/haoyoupage",
@@ -44,6 +41,12 @@
                 "text": "首页",
                 "iconPath": "icons/home.png",
                 "selectedIconPath": "icons/homeFilled.png"
+            },
+            {
+                "pagePath": "pages/friendList/index",
+                "text": "私信",
+                "iconPath": "icons/message.png",
+                "selectedIconPath": "icons/message_selected.png"
             },
             {
                 "pagePath": "pages/user/index",

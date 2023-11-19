@@ -6,7 +6,7 @@ Page({
         userInfo: null,
         logged: false,
         chatRoomEnvId: "cord-4gtkoygbac76dbeb",
-        chatRoomCollection: "chat",
+        chatRoomCollection: "chats",
         chatRoomGroupId: "",
         chatRoomGroupName: "",
         haoyou_openid: "none",

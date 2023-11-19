@@ -12,7 +12,7 @@ const formatDate = (date) => {
     return `${year}/${month}/${day}`;
 };
 
-// Formats a JavaScript Date object into a time string (HH:MM:SS)
+// Formats a JavaScript Date object into a time string (HH:MM)
 const formatTime = (date) => {
     const hours = formatWithLeadingZero(date.getHours());
     const minutes = formatWithLeadingZero(date.getMinutes());
@@ -21,7 +21,7 @@ const formatTime = (date) => {
     return `${hours}:${minutes}:${seconds}`;
 };
 
-// Formats a JavaScript Date object into a full date and time string (YYYY/MM/DD HH:MM:SS)
+// Formats a JavaScript Date object into a full date and time string (YYYY/MM/DD HH:MM)
 const formatFullDateTime = (date) => {
     return `${formatDate(date)} ${formatTime(date)}`;
 };
@@ -57,11 +57,16 @@ const createDateTimeFromMonthDayAndTime = (monthDay, time) => {
     return new Date(`${currentYear}/${monthDay} ${time}`);
 };
 
+const createFullDateTime = (year, monthDay, time) => {
+    return new Date(`${year}/${monthDay} ${time}`);
+};
+
 module.exports = {
     formatFullDateTime,
     formatDate,
     formatMonthDay,
     formatShortDate,
     formatDateTimeShortYear,
+    createFullDateTime,
     createDateTimeFromMonthDayAndTime,
 };

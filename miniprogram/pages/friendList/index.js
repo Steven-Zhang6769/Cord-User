@@ -1,40 +1,21 @@
 const app = getApp();
+import { getUserData } from "../../utils/userUtils";
 Page({
     data: {
         openid: wx.getStorageSync("openid"),
+        friendList: app.globalData.userInfo.friends,
     },
 
-    onLoad: function (options) {
-        app.getUserInfo(this.data.openid);
+    onLoad: async function (options) {
+        wx.showLoading({ title: "加载中" });
+        const res = await getUserData(this.data.openid);
         this.setData({
-            userInfo: wx.getStorageSync("userInfo"),
-            friendList: wx.getStorageSync("userInfo").friends,
+            userInfo: app.globalData.userInfo,
+            friendList: app.globalData.userInfo.friends,
         });
-        wx.stopPullDownRefresh();
-    },
-    onPullDownRefresh: function () {
-        this.onLoad(); //重新加载onLoad()
         wx.hideLoading();
     },
-    getUserData(userID) {
-        return new Promise((resolve, reject) => {
-            wx.cloud
-                .database()
-                .collection("users")
-                .where({
-                    openid: userID,
-                })
-                .get()
-                .then((res) => {
-                    resolve(res.data[0]);
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
-    },
     chat(e) {
-        console.log(e);
         let chatID = e.currentTarget.dataset.chatid;
         let name = e.currentTarget.dataset.name;
         let targetOpenID = e.currentTarget.dataset.openid;

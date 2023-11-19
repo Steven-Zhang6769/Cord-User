@@ -1,184 +1,138 @@
+import { getTransactionFromID } from "../../utils/transactionUtils";
+
 Page({
-  data: {
-    show: false,
-    transactionID: "",
-    cordID: wx.getStorageSync("CordID"),
-  },
+    data: {
+        loading: true,
+        transactionID: "",
+        cordID: wx.getStorageSync("CordID"),
+    },
 
-  onLoad: function (options) {
-    this.setData({
-      transactionID: options.transactionid,
-      options: options
-    });
-    this.getTransactionData(options.transactionid);
-    wx.stopPullDownRefresh();
-  },
-  onPullDownRefresh: function () {
-    this.onLoad(this.data.options); //重新加载onLoad()
-    wx.hideLoading();
-  },
-  async getTransactionData(transactionID) {
-    var res = await wx.cloud
-      .database()
-      .collection("transaction")
-      .doc(transactionID)
-      .get();
+    // ========================
+    // Lifecycle Methods
+    // ========================
 
-    res.data.createTime = this.formatTimeWithHours(
-      new Date(res.data.createTime)
-    );
-    res.data.amount = parseFloat(res.data.amount).toFixed(2);
+    async onLoad(options) {
+        this.loadData(options.transactionid);
+    },
 
-    this.getOrderData(transactionID);
-    const senderData = await this.getUserData(res.data.sender);
-    const receiverData = await this.getUserData(res.data.receiver);
+    // ========================
+    // Data Fetching
+    // ========================
 
-    this.setData({
-      transactionData: res.data,
-      senderData: senderData,
-      receiverData: receiverData,
-    });
-  },
+    async loadData(transactionId) {
+        try {
+            wx.showLoading({ title: "加载订单中" });
+            const transaction = await getTransactionFromID(transactionId);
+            this.setData({
+                transactionData: transaction.transactionData,
+                senderData: transaction.senderData,
+                receiverData: transaction.receiverData,
+                loading: false,
+            });
+        } catch (error) {
+            wx.showToast({
+                title: "加载失败",
+                icon: "error",
+            });
+            console.error("Load data error:", error);
+        } finally {
+            wx.hideLoading();
+        }
+    },
 
-  async getOrderData(transactionID) {
-    const res = await wx.cloud
-      .database()
-      .collection("orders")
-      .where({
-        transaction: transactionID,
-      })
-      .get();
+    // ========================
+    // UI Interactions
+    // ========================
 
-    this.setData({
-      orderData: res.data[0],
-    });
-  },
-
-  getUserData(userID) {
-    return new Promise((resolve, reject) => {
-      wx.cloud
-        .database()
-        .collection("user")
-        .where({
-          _id: userID,
-        })
-        .get()
-        .then((res) => {
-          resolve(res.data[0]);
-        })
-        .catch((err) => {
-          reject(err);
+    enlarge(e) {
+        const { url } = e.currentTarget.dataset;
+        wx.previewImage({
+            current: url,
+            urls: [url],
         });
-    });
-  },
+    },
 
-  formatTimeWithHours(date) {
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
+    navigateToOrderDetail(e) {
+        const { orderid } = e.currentTarget.dataset;
+        wx.navigateTo({
+            url: `/pages/orderDetail/index?orderid=${orderid}`,
+        });
+    },
 
-    var hour = date.getHours();
-    var minute = date.getMinutes();
-    var second = date.getSeconds();
+    // ========================
+    // Image Upload & Update
+    // ========================
 
-    return (
-      [year, month, day].map(this.formatNumber).join("/") +
-      " " +
-      [hour, minute].map(this.formatNumber).join(":")
-    );
-  },
-  formatNumber(n) {
-    n = n.toString();
-    return n[1] ? n : "0" + n;
-  },
-  enlarge(e) {
-    wx.previewImage({
-      current: e.currentTarget.dataset.url,
-      urls: [e.currentTarget.dataset.url],
-    });
-  },
+    async reUpload() {
+        try {
+            const uploadRes = await this.chooseImage();
+            if (this.data.transactionData.screenshot) {
+                await this.deleteScreenshotFromCloud(this.data.transactionData.screenshot);
+            }
+            const screenshotUrl = await this.uploadScreenshot(uploadRes.tempFiles[0].tempFilePath);
+            await this.updateScreenshotInDatabase(screenshotUrl);
+            this.onLoad({ transactionid: this.data.transactionData._id });
+            wx.showToast({
+                title: "更新成功",
+                icon: "success",
+            });
+        } catch (error) {
+            wx.showToast({
+                title: "更新失败",
+                icon: "error",
+            });
+            console.error("Re-upload error:", error);
+        } finally {
+            wx.hideLoading();
+        }
+    },
+    async deleteScreenshotFromCloud(fileID) {
+        try {
+            await wx.cloud.deleteFile({
+                fileList: [fileID],
+            });
+            console.log(`Screenshot deleted successfully: ${fileID}`);
+        } catch (error) {
+            console.error(`Failed to delete screenshot: ${fileID}`, error);
+        }
+    },
 
-  orderNavigator(e) {
-    wx.navigateTo({
-      url:
-        "/pages/orderDetail/index?orderid=" + e.currentTarget.dataset.orderid,
-    });
-  },
-  async reUpload(e) {
-    const uploadRes = await wx.chooseMedia({
-      media: ["image"],
-      count: 1,
-      sizeType: ["original", "compressed"],
-      sourceType: ["album", "camera"],
-    })
-    var tempPath = uploadRes.tempFiles[0].tempFilePath;
-    wx.showLoading({
-      title: "更新中",
-    });
-    var screenshotID = Date.now() + "Transaction.jpg";
-    try {
-      const res = await wx.cloud.uploadFile({
-        cloudPath: screenshotID,
-        filePath: tempPath,
-      });
-      await wx.cloud.callFunction({
-        name: "updateScreenshot",
-        data: {
-          transactionid: this.data.transactionData._id,
-          url: res.fileID,
-        },
-      });
-    } catch (err) {
-      console.log(err);
-      wx.showToast({
-        title: "更新失败",
-        icon: "error",
-      });
-    }
-    this.onLoad({ transactionid: this.data.transactionID });
-    this.onClose();
-    wx.hideLoading();
-    wx.showToast({
-      title: "更新成功",
-      icon: "success",
-    });
-  },
+    async chooseImage() {
+        return await wx.chooseMedia({
+            media: ["image"],
+            count: 1,
+            sizeType: ["original", "compressed"],
+            sourceType: ["album", "camera"],
+        });
+    },
 
-  onClose() {
-    this.setData({
-      show: false,
-    });
-  },
-  async updateScreenshot() {
-    wx.showLoading({
-      title: "更新中",
-    });
-    var screenshotID = Date.now() + "Transaction.jpg";
-    try {
-      const res = await wx.cloud.uploadFile({
-        cloudPath: screenshotID,
-        filePath: this.data.tempPath,
-      });
-      await wx.cloud.callFunction({
-        name: "updateScreenshot",
-        data: {
-          transactionid: this.data.transactionData._id,
-          url: res.fileID,
-        },
-      });
-    } catch (err) {
-      console.log(err);
-      wx.showToast({
-        title: "更新失败",
-        icon: "error",
-      });
-    }
-    this.onLoad({ transactionid: this.data.transactionID });
-    this.onClose();
-    wx.hideLoading();
-    wx.showToast({
-      title: "更新成功",
-      icon: "success",
-    });
-  },
+    async uploadScreenshot(tempPath) {
+        const screenshotID = `${Date.now()}Transaction.jpg`;
+        wx.showLoading({ title: "更新中" });
+        const res = await wx.cloud.uploadFile({
+            cloudPath: screenshotID,
+            filePath: tempPath,
+        });
+        return res.fileID;
+    },
+
+    async updateScreenshotInDatabase(url) {
+        try {
+            const res = await wx.cloud
+                .database()
+                .collection("transactions")
+                .doc(this.data.transactionData._id)
+                .update({
+                    data: {
+                        screenshot: url,
+                    },
+                });
+            if (!res || res.errMsg !== "document.update:ok") {
+                throw new Error(res.errMsg || "Update failed");
+            }
+            console.log("Screenshot updated successfully", res);
+        } catch (err) {
+            console.error("Failed to update screenshot in database:", err);
+        }
+    },
 });

@@ -58,8 +58,9 @@ Page({
                 });
             }
             const registerRes = await wx.cloud.callFunction({
-                name: "registerUser",
+                name: "register",
                 data: {
+                    type: "user",
                     profilePic: httpPath.fileList[0].tempFileURL,
                     username: this.data.userName,
                     openid: this.data.openid,

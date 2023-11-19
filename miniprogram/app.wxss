@@ -124,18 +124,47 @@ page {
   margin: 0px auto;
   background-color: #ffffff;
   border-radius: 16rpx;
-  box-shadow: 0px 2px 10px rgba(3, 3, 3, 0.1);
+  box-shadow: 0px 5px 12px #ebedf0;
   padding: 35rpx;
   margin-top: 25rpx;
 }
 .card .card-title {
   color: #000000;
-  font-size: 44rpx;
+  font-size: 40rpx;
   font-family: PingFangSC-Semibold;
   font-weight: 600;
   line-height: 58rpx;
 }
 .card .card-subtitle {
+  color: #323232;
+  font-size: 24rpx;
+  font-family: PingfangSC;
+  font-weight: 250;
+  line-height: 28rpx;
+  margin-top: 20rpx;
+}
+.flexCard {
+  width: 85%;
+  margin: 0px auto;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  box-shadow: 0px 5px 12px #ebedf0;
+  padding: 30rpx;
+  margin-top: 25rpx;
+}
+.flexCard .header {
+  display: flex;
+  justify-content: space-between;
+}
+.flexCard .card-title {
+  color: #000000;
+  font-size: 38rpx;
+  font-family: PingFangSC-Semibold;
+  font-weight: 600;
+  line-height: 58rpx;
+  margin-bottom: 20rpx;
+}
+.flexCard .card-subtitle {
   color: #323232;
   font-size: 24rpx;
   font-family: PingfangSC;
@@ -172,80 +201,10 @@ page {
   height: 20px;
   margin-top: -35px;
 }
-view.orderRow {
-  background-color: #f6f6f6;
-  border-radius: 25rpx;
-  box-shadow: 0px 2px 10px rgba(3, 3, 3, 0.1);
-  padding: 33rpx 0rpx;
-  display: flex;
-  align-items: center;
-}
-view.orderRow view.left {
-  flex: 25%;
-  text-align: center;
-}
-view.orderRow view.left image {
-  width: 122rpx;
-  height: 122rpx;
-  border-radius: 50%;
-}
-view.orderRow view.middle {
-  color: #363938;
-  text-align: left;
-  flex: 51%;
-}
-view.orderRow view.middle view.serviceName {
-  padding-top: 6px;
-  font-family: PingFangSC-Semibold;
-  font-size: 33rpx;
-}
-view.orderRow view.middle .detail {
-  margin-top: 15rpx;
-  color: #9f9f9f;
-  font-family: PingFangSC-Regular;
-  font-size: 22rpx;
-}
-view.orderRow view.middle .detail text.iconfont {
-  color: #369472;
-  font-size: 13px;
-}
-view.orderRow view.middle view.line {
-  margin-top: 23rpx;
-  margin-bottom: 23rpx;
-  width: 90%;
-  height: 1rpx;
-  background-color: #e4e5e5;
-}
-view.orderRow view.right {
-  flex: 22%;
-  text-align: center;
-}
-view.orderRow view.right view.price {
-  border-radius: 8px;
-  font-family: PingFangSC-Semibold;
-  font-size: 47rpx;
-}
-view.orderRow view.right view.status {
-  margin-top: 20rpx;
-}
-view.orderRow view.right view.status text {
-  font-family: PingFangSC;
-  font-size: 24rpx;
-  color: #fafcfc;
-  padding: 5px 7px 5px 7px;
-  border-radius: 8px;
-}
-view.orderRow view.pending view.price {
-  color: #f9cf29;
-}
-view.orderRow view.pending view.status text {
-  background-color: #f9cf29;
-}
-.orderCard {
-  background-color: #ffffff;
-}
 .orderCard .thumb {
   border-radius: 20rpx;
+  height: 98%;
+  width: 98%;
 }
 .orderCard .price {
   color: #363938;
@@ -300,4 +259,87 @@ view.underlineCardBold .info text {
 .van-tabbar-item__text {
   font-size: 21rpx;
   font-family: PingFangSC-Regular;
+}
+.fullOrderRow {
+  background-color: white;
+  margin-top: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 5px 12px #ebedf0;
+  padding: 25rpx 5rpx;
+}
+.fullOrderRow .top {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.fullOrderRow .top .left {
+  text-align: left;
+}
+.fullOrderRow .top .left .storeInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+  width: 100%;
+}
+.fullOrderRow .top .left .storeInfo .thumb {
+  margin-left: -20rpx;
+}
+.fullOrderRow .top .left .storeInfo .thumb image {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+}
+.fullOrderRow .top .left .storeInfo .storeDetail {
+  margin-left: 20rpx;
+}
+.fullOrderRow .top .left .storeInfo .storeDetail .h6 {
+  margin-top: 40rpx;
+  margin-left: -6rpx;
+  color: #9f9f9f;
+  font-family: PingFangSC-Regular;
+  font-size: 22rpx;
+}
+.fullOrderRow .top .left .storeInfo .storeDetail .h6 .iconfont {
+  color: #369472;
+  font-size: 13px;
+}
+.fullOrderRow .top .right {
+  margin-top: -50rpx;
+  margin-right: -20rpx;
+  text-align: center;
+}
+.fullOrderRow .top .right .status {
+  margin-top: 20rpx;
+}
+.fullOrderRow .top .right .status text {
+  font-family: PingFangSC;
+  font-size: 27rpx;
+  color: #fafcfc;
+  padding: 5px 7px;
+  border-radius: 8px;
+}
+.fullOrderRow .top .right.pending .h1 {
+  color: #f9cf29;
+}
+.fullOrderRow .top .right.pending .status text {
+  background-color: #f9cf29;
+}
+.fullOrderRow .top .right.paid .h1 {
+  color: #369472;
+}
+.fullOrderRow .top .right.paid .status text {
+  background-color: #369472;
+}
+.fullOrderRow .top .right.rejected .h1 {
+  color: #FF5833;
+}
+.fullOrderRow .top .right.rejected .status text {
+  background-color: #FF5833;
+}
+.fullOrderRow .top .right.complete .h1 {
+  color: #9f9f9f;
+}
+.fullOrderRow .top .right.complete .status text {
+  background-color: #9f9f9f;
 }

@@ -12,7 +12,7 @@ async function getMerchantDataWithID(id) {
 async function fetchMerchantData(whereCondition = {}) {
     try {
         const res = await wx.cloud.callFunction({
-            name: "fetchMerchantData",
+            name: "fetch",
             data: {
                 whereCondition: whereCondition,
             },
