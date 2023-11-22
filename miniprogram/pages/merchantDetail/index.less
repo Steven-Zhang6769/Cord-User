@@ -1,12 +1,18 @@
 page {
     background-color: #f7f8fa;
 }
-view.header {
-    height: 250rpx;
+.background-image {
+    width: 100%;
+    height: 400rpx;
+    position: absolute;
+    z-index: -1000;
+    image {
+        width: 100%;
+        height: 400rpx;
+    }
+}
+.header {
     text-align: center;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
     padding-top: 120rpx;
 
     .backButton {
@@ -21,7 +27,7 @@ view.header {
 }
 
 .body {
-    padding-bottom: 30rpx;
+    margin-top: 310rpx;
     .merchantInfo {
         width: 95%;
         margin: 0px auto;
@@ -68,14 +74,14 @@ view.header {
                 }
             }
         }
-        view.info_row {
+        .info_row {
             display: flex;
             width: 100%;
             padding: 40rpx 0rpx;
             margin-left: -18rpx;
             line-height: 0.8em;
 
-            view.info_column {
+            .info_column {
                 flex: 33%;
                 max-width: 33%;
                 margin-right: 4rpx;
@@ -91,7 +97,7 @@ view.header {
                     margin-top: 20rpx;
                 }
 
-                view.desc {
+                .desc {
                     margin-top: 21rpx;
                     font-family: PingFangSC;
                     font-weight: 450;
@@ -99,7 +105,7 @@ view.header {
                     color: #656565;
                 }
 
-                view.vertical_line {
+                .vertical_line {
                     border-right: 1px solid #d9d9d9;
                     height: 20px;
                     margin-top: -40px;
@@ -115,7 +121,7 @@ view.header {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 30rpx;
-        view.serviceRow {
+        .serviceRow {
             border-radius: 15rpx;
             background-color: white;
             box-shadow: 0px 5px 12px #ebedf0;
@@ -138,7 +144,7 @@ view.header {
                 }
             }
 
-            view.bottom {
+            .bottom {
                 display: flex;
                 justify-content: space-between;
                 margin-top: 25rpx;
@@ -187,7 +193,7 @@ view.header {
     width: 87%;
     margin: 0px auto;
     margin-top: 15rpx;
-    view.pics {
+    .pics {
         swiper {
             background-color: white;
             text-align: center;
@@ -236,7 +242,7 @@ view.header {
     }
 }
 
-view.underlineCard {
+.underlineCard {
     .content {
         font-family: PingFangSC;
         font-size: 14px;

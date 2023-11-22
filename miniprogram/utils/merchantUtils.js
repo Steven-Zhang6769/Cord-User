@@ -14,6 +14,7 @@ async function fetchMerchantData(whereCondition = {}) {
         const res = await wx.cloud.callFunction({
             name: "fetch",
             data: {
+                type: "merchant",
                 whereCondition: whereCondition,
             },
         });
@@ -52,5 +53,6 @@ async function getCurrentAppointments(merchantID) {
 module.exports = {
     getAllMerchantData,
     getMerchantDataWithID,
+    fetchMerchantData,
     getCurrentAppointments,
 };

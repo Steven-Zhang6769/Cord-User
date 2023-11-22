@@ -30,16 +30,16 @@ exports.main = async (event, context) => {
             from: "orders",
             let: { merchant_id: "$_id" },
             pipeline: [
-                { $match: { $expr: { $eq: ["$merchant", "$$merchant_id"] } } }, // Changed "$merchants" to "$merchant"
-                { $group: { _id: null, avgRating: $.avg("$rating") } },
+                { $match: { $expr: { $eq: ["$merchant", "$$merchant_id"] } } },
+                { $group: { _id: null, avgRating: $.avg("$rating"), numOrder: { $sum: 1 } } },
             ],
             as: "avgRatingData",
         })
         .addFields({
             ownerData: { $arrayElemAt: ["$ownerData", 0] },
             avgRating: { $arrayElemAt: ["$avgRatingData.avgRating", 0] },
+            numOrder: { $arrayElemAt: ["$avgRatingData.numOrder", 0] }
         })
         .end();
-
     return res;
 };

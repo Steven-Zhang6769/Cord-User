@@ -1,4 +1,7 @@
-<view class="header" style="background-image: url({{ merchantData.coverPic }});">
+<view class="background-image">
+  <image src="{{merchantData.coverPic}}" mode="aspectFill"></image>
+</view>
+<view class="header">
     <view class="backButton" bindtap="navigateBack">
         <van-icon name="arrow-left" size="20px" color="white" />
     </view>
@@ -8,7 +11,7 @@
     <view class="merchantInfo">
         <view class="merchantDetail">
             <view class="left">
-                <image src="{{ merchantData.ownerData.profilePic }}"></image>
+                <image src="{{ merchantData.ownerData.profilePic }}" mode="aspectFill"></image>
             </view>
             <view class="right">
                 <view class="h1">{{ merchantData.title }}</view>

@@ -36,8 +36,8 @@
     </view>
     <view class="categorySelector">
         <view class="wrapper">
-            <view class="study column">
-                <view class="icon" bindtap="categoryNavigator" data-category="study">
+            <view class="learning column">
+                <view class="icon" bindtap="categoryNavigator" data-category="learning">
                     <image src="../../image/index/study.PNG" mode="aspectFit"></image>
                 </view>
                 <view class="text">

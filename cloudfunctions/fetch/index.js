@@ -2,6 +2,7 @@ const fetchMerchantData = require("./fetchMerchantData/index");
 const fetchOrderData = require("./fetchOrderData/index");
 const fetchTransactionData = require("./fetchTransactionData/index");
 const fetchOwnerData = require("./fetchOwnerData/index");
+const fetchPrevAppointments = require("./fetchPrevAppointments/index");
 
 // 云函数入口函数
 
@@ -15,6 +16,8 @@ exports.main = async (event, context) => {
             return fetchTransactionData.main(event, context);
         case "owner":
             return fetchOwnerData.main(event, context);
+        case "prevAppointments":
+          return fetchPrevAppointments.main(event, context);
         default:
             return null;
     }

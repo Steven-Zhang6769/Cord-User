@@ -1,3 +1,4 @@
+const { start } = require("repl");
 const cloud = require("wx-server-sdk");
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }); // 使用当前云环境
@@ -15,6 +16,9 @@ exports.main = async (event, context) => {
     if (event.dateReverse) {
         whereCondition.date = _.lte(new Date());
     }
+    if(event.startOfDay && event.endOfDay){
+      whereCondition.date = _.and(_.gte(new Date(event.startOfDay)), _.lte(new Date(event.endOfDay)))
+      }
 
     const statusMap = {
         pending: "待审核",
@@ -50,6 +54,12 @@ exports.main = async (event, context) => {
             merchantData: { $arrayElemAt: ["$merchantData", 0] },
             participantData: { $arrayElemAt: ["$participantData", 0] },
             transactionData: { $arrayElemAt: ["$transactionData", 0] },
+            formattedReservationTime: {
+              $dateToString: { format: "%Y/%m/%d %H:%M", date: "$date" }
+          },
+          formattedCreateTime: {
+            $dateToString: { format: "%Y/%m/%d %H:%M", date: "$createTime" }
+        },
             chineseStatus: {
                 $switch: {
                     branches: [

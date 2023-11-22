@@ -34,7 +34,7 @@ Page({
             this.setData({
                 merchantData,
                 serviceData: merchantData.serviceData,
-                avgRating: merchantData.avgRating.toFixed(1),
+                avgRating: merchantData.avgRating ? merchantData.avgRating.toFixed(1) : "0.0",
                 loading: false,
             });
         } catch (error) {
