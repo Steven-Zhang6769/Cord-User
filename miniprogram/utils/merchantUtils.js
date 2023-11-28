@@ -30,7 +30,7 @@ async function getCurrentAppointments(merchantID) {
             .collection("orders")
             .where({
                 merchant: merchantID,
-                date: db.command.gt(new Date()),
+                date: _.gt(new Date()),
             })
             .get();
 

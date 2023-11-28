@@ -2,26 +2,22 @@ page {
   background-color: #f7f8fa;
 }
 .dropdown {
-  margin-bottom: 20rpx;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 10000;
 }
 .dropdown .dropdownItem {
   font-family: PingFangSC-Regular;
   font-size: 14px;
 }
-view.all {
+.all {
   margin: 0px auto;
+  margin-top: 120rpx;
   padding-bottom: 100rpx;
   width: 95%;
 }
-view.all view.line {
-  margin-top: 21rpx;
-  margin-bottom: 21rpx;
-  margin: 0px auto;
-  width: 90%;
-  height: 1rpx;
-  background-color: #e4e5e563;
-}
-view.all .orderCard {
+.all .orderCard {
   background-color: white;
   padding: 20rpx;
   margin-left: -15rpx;
@@ -29,6 +25,6 @@ view.all .orderCard {
   opacity: 0.95;
   transform: scale(0.9);
 }
-view.all .orderCard .thumb {
+.all .orderCard .thumb {
   opacity: 0.8;
 }

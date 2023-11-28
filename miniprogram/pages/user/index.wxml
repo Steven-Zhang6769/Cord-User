@@ -9,14 +9,18 @@
 <view class="postLogin" wx:if="{{ loginStatus }}">
     <view class="header">
         <view class="background-image">
-          <image src="{{userInfo.profilePic}}" mode="aspectFill"></image>
+            <image src="{{ userInfo.profilePic }}" mode="aspectFill"></image>
         </view>
         <view class="wrapper">
-            <image src="{{ userInfo.profilePic }}"></image>
+            <van-image src="{{ userInfo.profilePic }}" round lazy-load fit="cover" use-loading-slot use-error-slot>
+                <van-loading slot="loading" type="spinner" size="20" vertical />
+                <van-icon slot="error" name="photo-o" size="50rpx" />
+            </van-image>
             <view class="h2">{{ userInfo.username }}</view>
             <view class="buttons">
                 <button bindtap="viewHistory">订单列表</button>
                 <button bindtap="viewTransactions">付款记录</button>
+                <button bindtap="viewCommunityHistory">社区记录</button>
             </view>
         </view>
     </view>
@@ -32,7 +36,17 @@
                     <view class="left">
                         <view class="storeInfo">
                             <view class="thumb">
-                                <image src="{{ item.merchantData.coverPic }}" mode="aspectFill"></image>
+                                <van-image
+                                    src="{{ item.merchantData.coverPic }}"
+                                    round
+                                    lazy-load
+                                    fit="cover"
+                                    use-loading-slot
+                                    use-error-slot
+                                    custom-class="image">
+                                    <van-loading slot="loading" type="spinner" size="20" vertical />
+                                    <van-icon slot="error" name="photo-o" size="50rpx" />
+                                </van-image>
                             </view>
                             <view class="storeDetail">
                                 <view class="h3">{{ item.merchantData.title }}</view>

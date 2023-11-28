@@ -8,7 +8,7 @@ page {
     top: 500rpx;
 }
 
-view.index {
+.index {
     .swiper {
         margin: 0 auto;
 
@@ -18,7 +18,7 @@ view.index {
             height: 610rpx;
 
             swiper-item {
-                image {
+                .image {
                     height: 100%;
                     width: 100%;
                 }
@@ -71,7 +71,7 @@ view.index {
         }
     }
 
-    view.categorySelector {
+    .categorySelector {
         align-items: center;
         border-radius: 16rpx;
         margin: 0 auto 20rpx;
@@ -114,7 +114,7 @@ view.index {
         }
     }
 
-    view.body {
+    .body {
         swiper {
             height: 650rpx !important;
 
@@ -139,19 +139,15 @@ view.index {
                     transition: all 0.2s ease-in;
                     overflow: hidden;
 
-                    view.background {
+                    .background {
                         border-radius: 15rpx 15rpx 0 0;
                         height: 250rpx;
-
-                        image {
-                            height: 560rpx;
-                        }
                     }
 
-                    view.information {
+                    .information {
                         margin-top: 130rpx;
                         box-shadow: 0 0 10px 10px rgba(255, 255, 255, 0.6);
-                        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, #fafcfc 82%);
+                        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, #fafcfcef 82%);
                         backdrop-filter: blur(3px);
                         height: 170rpx;
                         border-radius: 15rpx;
@@ -160,8 +156,8 @@ view.index {
                         padding: 10px 7px 13px 0;
                         justify-content: space-between;
 
-                        view.left {
-                            image {
+                        .left {
+                            .image {
                                 margin-left: 20rpx;
                                 width: 135rpx;
                                 height: 135rpx;
@@ -169,7 +165,7 @@ view.index {
                             }
                         }
 
-                        view.right {
+                        .right {
                             text-align: right;
                         }
                     }

@@ -1,5 +1,6 @@
 // app.js
 import { getUserData } from "./utils/userUtils";
+const CommunityManager = require("./utils/communityManager");
 App({
     globalData: {
         userInfo: null,
@@ -17,6 +18,8 @@ App({
     },
 
     initializeApp: async function () {
+        const communityManager = new CommunityManager();
+        this.globalData.communityManager = communityManager;
         this.initializeCloud();
         this.autoUpdate();
         const openid = await this.handleOpenid();

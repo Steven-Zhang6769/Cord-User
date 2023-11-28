@@ -5,7 +5,7 @@ const TEMPLATE_ID = "b0cVrk0vEvthUKTmqt7xV-31wgxUcC-beFDI5N4kkXc";
 
 Page({
     data: {
-        loading: true,
+        loading: false,
         openid: wx.getStorageSync("openid"),
         loginStatus: app.globalData.loginStatus,
         userInfo: wx.getStorageSync("userInfo"),
@@ -17,18 +17,20 @@ Page({
         totalOrder: 0,
     },
 
-    onLoad(options) {
-        this.refreshData(options.id);
+    async onLoad(options) {
+        await this.refreshData(options.id);
+        this.setData({ options });
     },
-    onPullDownRefresh(options) {
-        this.refreshData(options.id);
+    async onPullDownRefresh() {
+        await this.onLoad(this.data.options);
+        wx.stopPullDownRefresh();
     },
 
     // ========================
     // Data Fetching
     // ========================
     async refreshData(id) {
-        wx.showLoading({ title: "加载商家中" });
+        this.setData({ loading: true });
         try {
             const [merchantData] = await getMerchantDataWithID(id);
             this.setData({
@@ -40,7 +42,9 @@ Page({
         } catch (error) {
             console.error("Error loading merchant data:", error);
         }
-        wx.hideLoading();
+        this.setData({
+            loading: false,
+        });
     },
 
     // ========================

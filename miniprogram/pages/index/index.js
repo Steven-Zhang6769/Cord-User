@@ -50,7 +50,7 @@ Page({
         const db = wx.cloud.database();
         const _ = db.command;
         const searchRes = await fetchDataFromDB(
-            "merchant",
+            "merchants",
             _.or([{ title: { $regex: ".*" + value + ".*", $options: "1" } }, { subTitle: { $regex: ".*" + value + ".*", $options: "1" } }])
         );
         const finalList = searchRes.length === 0 ? [] : searchRes;

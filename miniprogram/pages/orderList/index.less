@@ -3,7 +3,10 @@ page {
 }
 
 .dropdown {
-    margin-bottom: 20rpx;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 10000;
 
     .dropdownItem {
         font-family: PingFangSC-Regular;
@@ -11,18 +14,11 @@ page {
     }
 }
 
-view.all {
+.all {
     margin: 0px auto;
+    margin-top: 120rpx;
     padding-bottom: 100rpx;
     width: 95%;
-    view.line {
-        margin-top: 21rpx;
-        margin-bottom: 21rpx;
-        margin: 0px auto;
-        width: 90%;
-        height: 1rpx;
-        background-color: #e4e5e563;
-    }
     .orderCard {
         background-color: white;
         padding: 20rpx;

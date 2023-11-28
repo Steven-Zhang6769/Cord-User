@@ -3,7 +3,10 @@
         <swiper autoplay circular indicator-dots indicator-active-color="#369472">
             <swiper-item wx:for="{{ sliders }}" wx:key="_id" bindtap="swiperNavigator" data-url="{{ item.link }}">
                 <view class="filter"></view>
-                <image mode="aspectFill" src="{{ item.pic }}"></image>
+                <van-image src="{{ item.pic }}" lazy-load fit="cover" use-loading-slot use-error-slot custom-class="image">
+                    <van-loading slot="loading" type="spinner" size="20" vertical />
+                    <van-icon slot="error" name="photo-o" size="50rpx" />
+                </van-image>
             </swiper-item>
         </swiper>
     </view>
@@ -76,12 +79,24 @@
                     data-category="{{ item.category }}">
                     <view class="row">
                         <view class="background">
-                            <image src="{{ item.coverPic }}" mode="aspectFill"></image>
+                            <van-image src="{{ item.coverPic }}" lazy-load fit="cover" use-loading-slot use-error-slot height="600rpx" width="100%">
+                                <van-loading slot="loading" type="spinner" size="20" vertical />
+                                <van-icon slot="error" name="photo-o" size="50rpx" />
+                            </van-image>
                         </view>
-
                         <view class="information">
                             <view class="left">
-                                <image src="{{ item.ownerData.profilePic }}"></image>
+                                <van-image
+                                    src="{{ item.ownerData.profilePic }}"
+                                    lazy-load
+                                    fit="cover"
+                                    use-loading-slot
+                                    use-error-slot
+                                    round
+                                    custom-class="image">
+                                    <van-loading slot="loading" type="spinner" size="20" vertical />
+                                    <van-icon slot="error" name="photo-o" size="50rpx" />
+                                </van-image>
                             </view>
                             <view class="right">
                                 <view>

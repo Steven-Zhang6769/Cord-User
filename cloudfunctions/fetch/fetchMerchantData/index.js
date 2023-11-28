@@ -38,7 +38,7 @@ exports.main = async (event, context) => {
         .addFields({
             ownerData: { $arrayElemAt: ["$ownerData", 0] },
             avgRating: { $arrayElemAt: ["$avgRatingData.avgRating", 0] },
-            numOrder: { $arrayElemAt: ["$avgRatingData.numOrder", 0] }
+            numOrder: { $arrayElemAt: ["$avgRatingData.numOrder", 0] },
         })
         .end();
     return res;

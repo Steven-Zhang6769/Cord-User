@@ -2,15 +2,25 @@
     <van-dropdown-item value="{{ value }}" options="{{ options }}" bind:change="onFilterChange" title-class="dropdownItem" />
 </van-dropdown-menu>
 <van-skeleton title row="3" loading="{{ loading }}" />
-<view class="all">
-    <van-empty image="search" description="暂无任何符合记录" wx:if="{{ orders.length == 0 && !loading }}" />
+<view class="all" wx:if="{{ !loading }}">
+    <van-empty image="search" description="暂无任何符合记录" wx:if="{{ orders.length == 0 }}" />
     <view class="orders">
         <view class="fullOrderRow" wx:for="{{ orders }}" bindtap="orderNavigator" data-orderid="{{ item._id }}">
             <view class="top">
                 <view class="left">
                     <view class="storeInfo">
                         <view class="thumb">
-                            <image src="{{ item.merchantData.coverPic }}" mode="aspectFill"></image>
+                            <van-image
+                                lazy-load
+                                fit="cover"
+                                use-loading-slot
+                                use-error-slot
+                                custom-class="image"
+                                round
+                                src="{{ item.merchantData.coverPic }}">
+                                <van-loading slot="loading" type="spinner" size="20" vertical />
+                                <van-icon slot="error" name="photo-o" size="50rpx" />
+                            </van-image>
                         </view>
                         <view class="storeDetail">
                             <view class="h3">{{ item.merchantData.title }}</view>

@@ -1,0 +1,19 @@
+page {
+  background-color: #f7f8fa;
+}
+.skeleton {
+  margin-top: 200rpx;
+}
+.body {
+  width: 95%;
+  margin: 0 auto;
+}
+.fixed-button {
+  position: fixed;
+  right: 55rpx;
+  bottom: 55rpx;
+  z-index: 999;
+}
+.fixed-button .add-button {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}

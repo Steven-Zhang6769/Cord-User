@@ -27,11 +27,11 @@ Page({
         selectedDateTime: "",
         file: "",
         filter(type, options) {
-          if (type === 'minute') {
-            return options.filter((option) => option % 30 === 0);
-          }
-    
-          return options;
+            if (type === "minute") {
+                return options.filter((option) => option % 30 === 0);
+            }
+
+            return options;
         },
     },
 

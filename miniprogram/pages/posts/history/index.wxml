@@ -1,0 +1,56 @@
+<view class="skeleton" wx:if="{{ loading }}">
+    <van-skeleton title avatar row="3" loading="{{ loading }}" />
+</view>
+<view class="body" wx:if="{{ !loading }}">
+    <van-empty image="search" description="暂无内容" wx:if="{{ !posts || posts.length == 0 }}" />
+    <view class="postRow" wx:for="{{ posts }}" bindtap="postDetailNavigator" data-id="{{ item._id }}">
+        <view class="header">
+            <van-image src="{{ item.authorData.profilePic }}" round lazy-load fit="cover" use-loading-slot use-error-slot custom-class="avatar">
+                <van-loading slot="loading" type="spinner" size="20" vertical />
+            </van-image>
+            <view class="author-info">
+                <view class="author-name">{{ item.authorData.username }}</view>
+                <view class="timestamp">{{ item.formattedCreateTime }}</view>
+            </view>
+        </view>
+        <view class="body">
+            <view class="text">{{ item.message }}</view>
+            <van-grid direction="horizontal" column-num="3" custom-class="grid" square border="{{ false }}">
+                <van-grid-item use-slot wx:for="{{ item.photos }}" wx:for-item="photo">
+                    <van-image
+                        src="{{ photo }}"
+                        round
+                        lazy-load
+                        fit="cover"
+                        use-loading-slot
+                        use-error-slot
+                        custom-class="image"
+                        bindtap="enlarge"
+                        data-current="{{ photo }}"
+                        data-post="{{ item }}">
+                        <van-loading slot="loading" type="spinner" size="20" vertical />
+                    </van-image>
+                </van-grid-item>
+            </van-grid>
+        </view>
+        <view class="footer">
+            <van-icon name="chat-o" wx:if="{{ item.comments.length == 0 }}" />
+            <van-icon name="chat-o" info="{{ item.comments.length }}" wx:if="{{ item.comments.length != 0 }}" />
+            <van-icon name="like-o" wx:if="{{ item.likes.length == 0 }}" bindtap="likePost" data-id="{{ item._id }}" />
+            <van-icon
+                name="like-o"
+                info="{{ item.likes.length }}"
+                wx:if="{{ (item.likes.indexof(userInfo._id) != -1 ? false : true) && item.likes.length > 0 }}"
+                bindtap="likePost"
+                data-id="{{ item._id }}" />
+            <van-icon
+                name="like"
+                info="{{ item.likes.length }}"
+                wx:if="{{ (item.likes.indexof(userInfo._id) != -1 ? true : false) && item.likes.length > 0 }}"
+                bindtap="unlikePost"
+                data-id="{{ item._id }}"
+                color="#FF787A" />
+            <!-- <van-icon name="share-o" info="21" /> -->
+        </view>
+    </view>
+</view>

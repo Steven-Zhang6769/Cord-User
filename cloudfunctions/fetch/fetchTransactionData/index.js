@@ -20,6 +20,7 @@ exports.main = async (event, context) => {
                 formattedDate: {
                     $dateToString: {
                         format: "%Y/%m/%d %H:%M",
+                        timezone: event.timezone,
                         date: "$createTime",
                     },
                 },

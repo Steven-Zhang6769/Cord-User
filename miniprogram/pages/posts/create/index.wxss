@@ -1,0 +1,78 @@
+page {
+  background-color: #f7f8fa;
+}
+.container .van-nav-bar__text {
+  color: #359472;
+}
+.container .content {
+  padding: 40rpx;
+  width: 100%;
+  display: flex;
+}
+.container .content .user-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  flex: 20%;
+}
+.container .content .input {
+  flex: 80%;
+  min-width: 550rpx;
+}
+.container .uploader {
+  width: 90%;
+  margin: 0 auto;
+  min-height: 230rpx;
+  border-radius: 20rpx;
+  text-align: center;
+  align-items: center;
+  display: flex;
+}
+.container .uploader .upload {
+  box-shadow: 0px 2px 10px rgba(3, 3, 3, 0.1);
+  border-radius: 20rpx;
+  padding: 20rpx;
+  background-color: #ffffff;
+}
+.container .uploader .upload image {
+  width: 40rpx;
+  height: 40rpx;
+}
+.container .uploader .upload .text {
+  margin-top: 5rpx;
+  color: #737373;
+  font-size: 22rpx;
+  font-family: "Roboto";
+  line-height: 21px;
+}
+.container .uploader .upload .upload-button {
+  margin-top: 8rpx;
+  border-radius: 20rpx;
+  background-color: #359472;
+  color: #fafafa;
+  font-size: 20rpx;
+  font-family: "PingFangSC-Semibold";
+}
+.container .uploader .detail {
+  margin-bottom: 50rpx;
+}
+.footer {
+  position: absolute;
+  bottom: 90rpx;
+  width: 100%;
+}
+.footer .submit-button {
+  width: 85%;
+  margin: 0 auto;
+  height: 90rpx;
+  background-color: #359472;
+  border-radius: 50rpx;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 33rpx;
+  font-family: PingFangSC-Semibold;
+  font-weight: 300;
+  line-height: 37px;
+}

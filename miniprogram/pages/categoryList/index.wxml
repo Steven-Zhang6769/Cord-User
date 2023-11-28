@@ -1,14 +1,20 @@
-<view class="body">
+<van-skeleton title row="5" loading="{{ loading }}" custom-class="skeleton"></van-skeleton>
+<view class="body" wx:if="{{ !loading }}">
     <van-empty image="search" description="暂无相关服务，去主页看看吧" wx:if="{{ !allMerchants || allMerchants.length == 0 }}" />
-    <van-skeleton title row="3" loading="{{ loading }}"></van-skeleton>
     <view class="service">
         <view class="row" wx:for="{{ allMerchants }}" bindtap="merchantNavigator" data-merchant="{{ item._id }}">
             <view class="background">
-                <image src="{{ item.coverPic }}" mode="aspectFill"></image>
+                <van-image lazy-load fit="cover" use-loading-slot use-error-slot custom-class="image" round src="{{ item.coverPic }}">
+                    <van-loading slot="loading" type="spinner" size="20" vertical />
+                    <van-icon slot="error" name="photo-o" size="50rpx" />
+                </van-image>
             </view>
             <view class="information">
                 <view class="left">
-                    <image src="{{ item.ownerData.profilePic }}"></image>
+                    <van-image lazy-load fit="cover" use-loading-slot use-error-slot custom-class="image" round src="{{ item.ownerData.profilePic }}">
+                        <van-loading slot="loasding" type="spinner" size="20" vertical />
+                        <van-icon slot="error" name="photo-o" size="50rpx" />
+                    </van-image>
                 </view>
                 <view class="right">
                     <view class="leaderName">{{ item.merchantData.username }}</view>

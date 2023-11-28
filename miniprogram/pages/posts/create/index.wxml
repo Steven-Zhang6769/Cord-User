@@ -1,0 +1,30 @@
+<view class="container">
+    <van-nav-bar title="说些什么" left-text="取消" left-arrow bind:click-left="onClickLeft" />
+    <view class="content">
+        <van-image src="{{ userInfo.profilePic }}" custom-class="user-avatar" round lazy-load fit="cover" use-loading-slot use-error-slot>
+            <van-loading slot="loading" type="spinner" size="20" vertical />
+        </van-image>
+        <van-cell-group inset border="{{ false }}" custom-class="input">
+            <van-field value="{{ message }}" type="textarea" placeholder="请输入留言" autosize border="{{ false }}" bind:change="onChange" />
+        </van-cell-group>
+    </view>
+
+    <view class="uploader">
+        <van-uploader
+            max-count="{{ 6 }}"
+            file-list="{{ fileList }}"
+            bind:after-read="addPhoto"
+            bind:delete="deletePhoto"
+            deletable="{{ true }}"
+            preview-size="100px">
+            <view class="upload">
+                <image src="../../../image/posts/upload.png"></image>
+                <view class="text">上传图片</view>
+                <van-button size="small" custom-class="upload-button">上传</van-button>
+            </view>
+        </van-uploader>
+    </view>
+</view>
+<view class="footer">
+    <button class="submit-button" bindtap="submit">发布</button>
+</view>

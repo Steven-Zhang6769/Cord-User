@@ -10,6 +10,7 @@ async function getMerchantOrders(merchantId) {
             name: "fetch",
             data: {
                 type: "order",
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 whereCondition: {
                     merchant: merchantId,
                 },
@@ -28,6 +29,7 @@ async function getUserActiveOrders(cordID) {
             name: "fetch",
             data: {
                 type: "order",
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 whereCondition: {
                     participant: cordID,
                     status: { $ne: "complete" },
@@ -64,11 +66,9 @@ async function filterFetchOrders(filter) {
     };
 
     if (filter.current) {
-        // Logic to filter current orders (you would define what "current" means for your use case)
         requestData.date = true;
     }
     if (filter.history) {
-        // Logic to filter historical orders
         requestData.dateReverse = true;
     }
 
@@ -90,6 +90,7 @@ async function getOrderfromID(orderId) {
             name: "fetch",
             data: {
                 type: "order",
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 whereCondition: {
                     _id: orderId,
                 },

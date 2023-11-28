@@ -13,20 +13,21 @@
         "pages/paymentConfirmation/index",
         "pages/transactionDetail/index",
         "pages/orderDetail/index",
-        "pages/login/login",
         "pages/categoryList/index",
-        "pages/foodOrder/index",
-        "pages/foodOrderDetail/index",
+        "pages/posts/index",
+        "pages/posts/create/index",
+        "pages/posts/detail/index",
+        "pages/posts/history/index",
         "pages/example/chatroom_example/haoyoupage/haoyoupage",
         "pages/example/chatroom_example/room/room",
         "pages/example/chatroom_example/im"
     ],
     "window": {
-        "backgroundColor": "#F7F8FA",
+        "backgroundColor": "#f7f8fa",
         "backgroundTextStyle": "dark",
-        "navigationBarBackgroundColor": "#369472",
+        "navigationBarBackgroundColor": "#F6F6F6",
         "navigationBarTitleText": "聚CORD",
-        "navigationBarTextStyle": "white",
+        "navigationBarTextStyle": "black",
         "enablePullDownRefresh": true
     },
     "tabBar": {
@@ -41,6 +42,12 @@
                 "text": "首页",
                 "iconPath": "icons/home.png",
                 "selectedIconPath": "icons/homeFilled.png"
+            },
+            {
+                "pagePath": "pages/posts/index",
+                "text": "社区",
+                "iconPath": "icons/community.png",
+                "selectedIconPath": "icons/community_selected.png"
             },
             {
                 "pagePath": "pages/friendList/index",
@@ -86,6 +93,7 @@
         "van-goods-action-button": "@vant/weapp/goods-action-button/index",
         "van-card": "@vant/weapp/card/index",
         "van-rate": "@vant/weapp/rate/index",
-        "van-nav-bar": "@vant/weapp/nav-bar/index"
+        "van-nav-bar": "@vant/weapp/nav-bar/index",
+        "van-image": "@vant/weapp/image/index"
     }
 }

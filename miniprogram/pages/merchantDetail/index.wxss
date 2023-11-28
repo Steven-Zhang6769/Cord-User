@@ -7,7 +7,7 @@ page {
   position: absolute;
   z-index: -1000;
 }
-.background-image image {
+.background-image .image {
   width: 100%;
   height: 400rpx;
 }
@@ -48,7 +48,7 @@ page {
 .body .merchantInfo .merchantDetail .left {
   margin-left: 25rpx;
 }
-.body .merchantInfo .merchantDetail .left image {
+.body .merchantInfo .merchantDetail .left .image {
   width: 200rpx;
   height: 200rpx;
   border-radius: 25rpx;
@@ -124,7 +124,7 @@ page {
   justify-content: space-between;
   padding: 15px;
 }
-.body .mainBody .serviceRow image {
+.body .mainBody .serviceRow .image {
   width: 100%;
   height: 250rpx;
   margin: 0px auto;
@@ -148,7 +148,7 @@ page {
   width: 87%;
   margin: 0px auto;
 }
-.serviceDetail image {
+.serviceDetail .image {
   width: 100%;
   height: 440rpx;
   border-radius: 20rpx;
@@ -189,8 +189,9 @@ page {
   border-radius: 20rpx;
   box-shadow: 0px 5px 12px #ebedf0;
 }
-.merchantDetail .pics swiper-item .wrapper image {
-  height: 440rpx;
+.merchantDetail .pics swiper-item .wrapper .image {
+  height: 460rpx;
+  border-radius: 20rpx;
   width: 100%;
 }
 .cart {

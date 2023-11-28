@@ -62,6 +62,7 @@ Page({
                 data: {
                     type: "user",
                     profilePic: httpPath.fileList[0].tempFileURL,
+                    profilePicID: picRes.fileID[0],
                     username: this.data.userName,
                     openid: this.data.openid,
                 },

@@ -4,18 +4,19 @@ Page({
     data: {
         userInfo: app.globalData.userInfo,
         loginStatus: app.globalData.loginStatus,
-        loading: true,
+        loading: false,
     },
     onLoad: async function (options) {
-        wx.showLoading({
-            title: "加载中",
-        });
+        this.setData({ loading: true });
         const res = await getUserActiveOrders(app.globalData.userInfo._id);
         this.setData({
             orderData: res,
             loading: false,
         });
-        wx.hideLoading();
+    },
+    async onPullDownRefresh() {
+        await this.onLoad();
+        wx.stopPullDownRefresh();
     },
 
     login(e) {
@@ -53,6 +54,12 @@ Page({
     viewMoreOrders() {
         wx.navigateTo({
             url: "/pages/orderList/index?type=current",
+        });
+    },
+
+    viewCommunityHistory() {
+        wx.navigateTo({
+            url: "/pages/posts/history/index",
         });
     },
 

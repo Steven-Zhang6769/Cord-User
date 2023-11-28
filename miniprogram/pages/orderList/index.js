@@ -2,7 +2,7 @@ const app = getApp();
 import { filterFetchOrders } from "../../utils/orderUtils";
 Page({
     data: {
-        loading: true,
+        loading: false,
         value: "",
         filters: {
             all: true,
@@ -25,7 +25,7 @@ Page({
     },
 
     onLoad: async function (options) {
-        wx.showLoading({ title: "加载中" });
+        this.setData({ loading: true });
         // Initialize newFilters object with all properties set to false
         let newFilters = {
             all: false,
@@ -46,9 +46,12 @@ Page({
             value: options.type,
             orders: res,
             loading: false,
+            inputOptions: options,
         });
-
-        wx.hideLoading();
+    },
+    async onPullDownRefresh() {
+        await this.onLoad(this.data.inputOptions);
+        wx.stopPullDownRefresh();
     },
 
     onFilterChange: async function (e) {

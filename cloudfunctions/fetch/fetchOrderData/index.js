@@ -16,9 +16,9 @@ exports.main = async (event, context) => {
     if (event.dateReverse) {
         whereCondition.date = _.lte(new Date());
     }
-    if(event.startOfDay && event.endOfDay){
-      whereCondition.date = _.and(_.gte(new Date(event.startOfDay)), _.lte(new Date(event.endOfDay)))
-      }
+    if (event.startOfDay && event.endOfDay) {
+        whereCondition.date = _.and(_.gte(new Date(event.startOfDay)), _.lte(new Date(event.endOfDay)));
+    }
 
     const statusMap = {
         pending: "待审核",
@@ -55,11 +55,15 @@ exports.main = async (event, context) => {
             participantData: { $arrayElemAt: ["$participantData", 0] },
             transactionData: { $arrayElemAt: ["$transactionData", 0] },
             formattedReservationTime: {
-              $dateToString: { format: "%Y/%m/%d %H:%M", date: "$date" }
-          },
-          formattedCreateTime: {
-            $dateToString: { format: "%Y/%m/%d %H:%M", date: "$createTime" }
-        },
+                $dateToString: { format: "%Y/%m/%d %H:%M", 
+                timezone: event.timezone,
+                date: "$date" },
+            },
+            formattedCreateTime: {
+                $dateToString: { format: "%Y/%m/%d %H:%M",
+                timezone: event.timezone,
+                 date: "$createTime" },
+            },
             chineseStatus: {
                 $switch: {
                     branches: [

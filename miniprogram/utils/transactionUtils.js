@@ -6,6 +6,7 @@ async function getTransactionFromID(transactionID) {
             name: "fetch",
             data: {
                 type: "transaction",
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 whereCondition: {
                     _id: transactionID,
                 },
@@ -25,6 +26,7 @@ async function getUserTransactions(cordID) {
             name: "fetch",
             data: {
                 type: "transaction",
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 whereCondition: {
                     sender: cordID,
                 },
